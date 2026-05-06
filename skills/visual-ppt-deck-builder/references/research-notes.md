@@ -45,6 +45,7 @@
 
 - 必须先让用户确认 5 套图片风格候选，再进入逐页生成。
 - helper 只处理稳定导出，不承担风格发散。
+- 若生图能力不可用，使用 `scripts/build_style_candidates.js` 生成 5 张 SVG mini style board 作为最低限度可视化候选，避免退化成纯文字风格列表。
 - 透明素材用 `$transparent-visual-assets` 生产，PPTX 里作为图片层叠加。
 - 图表默认用可编辑 PPT 形状或图表对象，复杂插画才用透明 PNG。
 - README 应把这个 skill 定位成第三个业务能力，而不是 pet 或单纯图片处理能力。

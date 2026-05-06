@@ -138,6 +138,7 @@ python ~/.codex/skills/sprite-animation-assets/scripts/compose_sprite_set.py --h
 
 ```bash
 node ~/.codex/skills/visual-ppt-deck-builder/scripts/build_visual_pptx.js --help
+node ~/.codex/skills/visual-ppt-deck-builder/scripts/build_style_candidates.js --help
 ```
 
 ### 仓库结构
@@ -155,6 +156,7 @@ skills/
   visual-ppt-deck-builder/
     SKILL.md
     scripts/build_visual_pptx.js
+    scripts/build_style_candidates.js
     references/deck-spec-schema.md
     references/research-notes.md
 demos/
@@ -309,6 +311,7 @@ Core script:
 
 ```bash
 node ~/.codex/skills/visual-ppt-deck-builder/scripts/build_visual_pptx.js --help
+node ~/.codex/skills/visual-ppt-deck-builder/scripts/build_style_candidates.js --help
 ```
 
 ### Repository Layout
@@ -326,6 +329,7 @@ skills/
   visual-ppt-deck-builder/
     SKILL.md
     scripts/build_visual_pptx.js
+    scripts/build_style_candidates.js
     references/deck-spec-schema.md
     references/research-notes.md
 demos/

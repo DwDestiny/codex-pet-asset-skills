@@ -221,40 +221,79 @@ function add_title_slide(pptx, theme, slide_data, slide_index, total_slides) {
   });
   add_title(slide, theme, slide_data.title, {
     x: 0.72,
-    y: 1.3,
-    w: 10.9,
-    h: 1.25,
-    font_size: 34,
+    y: 1.08,
+    w: 6.75,
+    h: 1.85,
+    font_size: 30,
   });
   add_body(slide, theme, slide_data.subtitle || slide_data.body || "", {
     x: 0.75,
-    y: 2.7,
-    w: 6.8,
-    h: 0.9,
-    font_size: 15,
+    y: 3.12,
+    w: 5.95,
+    h: 1.05,
+    font_size: 14,
     color: theme.muted,
   });
   slide.addShape("rect", {
-    x: 8.25,
-    y: 1.1,
-    w: 3.75,
-    h: 4.9,
+    x: 7.95,
+    y: 0.9,
+    w: 4.05,
+    h: 5.35,
     fill: { color: theme.panel, transparency: 9 },
     line: { color: theme.accent, transparency: 45 },
     radius: 0.18,
   });
-  slide.addShape("arc", {
-    x: 8.75,
-    y: 1.62,
-    w: 2.65,
-    h: 2.65,
-    line: { color: theme.accent, pt: 3 },
-    adjustPoint: 0.22,
+  const panel_steps = [
+    ["01", "Topic"],
+    ["02", "Style"],
+    ["03", "Assets"],
+    ["04", "PPTX"],
+  ];
+  panel_steps.forEach((step, index) => {
+    const y_position = 1.35 + index * 0.83;
+    slide.addShape("ellipse", {
+      x: 8.38,
+      y: y_position,
+      w: 0.42,
+      h: 0.42,
+      fill: { color: index % 2 === 0 ? theme.accent : theme.accent_2 },
+      line: { color: "FFFFFF", pt: 1 },
+    });
+    slide.addText(step[0], {
+      x: 8.42,
+      y: y_position + 0.11,
+      w: 0.34,
+      h: 0.12,
+      fontFace: theme.font_face,
+      fontSize: 6.5,
+      bold: true,
+      color: "FFFFFF",
+      align: "center",
+      margin: 0,
+    });
+    slide.addText(step[1], {
+      x: 9.02,
+      y: y_position + 0.08,
+      w: 1.65,
+      h: 0.22,
+      fontFace: theme.font_face,
+      fontSize: 11,
+      color: theme.foreground,
+      bold: true,
+      margin: 0,
+    });
+  });
+  slide.addShape("line", {
+    x: 8.58,
+    y: 1.78,
+    w: 0,
+    h: 2.42,
+    line: { color: theme.accent, pt: 1.2, transparency: 28 },
   });
   slide.addText(slide_data.kicker || "Visual deck system", {
-    x: 8.65,
-    y: 4.82,
-    w: 2.95,
+    x: 8.38,
+    y: 5.15,
+    w: 3.1,
     h: 0.32,
     fontFace: theme.font_face,
     fontSize: 11,

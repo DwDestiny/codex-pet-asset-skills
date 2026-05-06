@@ -33,6 +33,16 @@ description: Build editable PPTX decks from a confirmed topic, outline, visual s
 
 候选图通过后，把被选中的方向固化为 `visual_style`：色板、字体气质、背景策略、图表语言、透明素材策略、禁用元素。
 
+如果当前环境无法直接保存 Codex 生图候选，先运行兜底工具生成 5 张 SVG mini style board，不要只交文字：
+
+```bash
+node "${CODEX_HOME:-$HOME/.codex}/skills/visual-ppt-deck-builder/scripts/build_style_candidates.js" \
+  --output-dir /absolute/path/style-candidates \
+  --topic "<deck topic>"
+```
+
+这些 SVG 不是最终高质量素材，只是为了让风格选择有可视化锚点；正式交付仍应优先使用 Codex 生图能力生成更精致的风格候选。
+
 ## 透明素材策略
 
 需要透明背景素材时调用 `$transparent-visual-assets`：

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#f3f4f1"/>
+  <rect x="68" y="74" width="10" height="570" fill="#1f8a70"/>
+  <text x="108" y="142" font-family="Arial, sans-serif" font-size="48" font-weight="700" fill="#17202a">业务冷静型</text>
+  <text x="112" y="196" font-family="Arial, sans-serif" font-size="24" fill="#667085">克制、清楚、适合内部汇报</text>
+  <rect x="112" y="270" width="300" height="220" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <rect x="458" y="270" width="300" height="220" rx="8" fill="#ffffff" stroke="#1f8a70"/>
+  <rect x="804" y="270" width="300" height="220" rx="8" fill="#ffffff" stroke="#e76f51"/>
+  <line x1="192" y1="545" x2="1020" y2="545" stroke="#1f8a70" stroke-width="5"/>
+  <circle cx="192" cy="545" r="18" fill="#1f8a70"/>
+  <circle cx="606" cy="545" r="18" fill="#e76f51"/>
+  <circle cx="1020" cy="545" r="18" fill="#1f8a70"/>
+</svg>
+

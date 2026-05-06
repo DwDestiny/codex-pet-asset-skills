@@ -143,6 +143,37 @@ class visual_ppt_deck_builder_tests(unittest.TestCase):
             self.assertIn("slides", result.stderr)
             self.assertFalse(output_path.exists())
 
+    def test_style_candidate_helper_writes_five_visual_boards(self):
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            output_dir = tmp_path / "style-candidates"
+
+            subprocess.run(
+                [
+                    self.node_executable(),
+                    str(
+                        repo_root
+                        / "skills"
+                        / "visual-ppt-deck-builder"
+                        / "scripts"
+                        / "build_style_candidates.js"
+                    ),
+                    "--output-dir",
+                    str(output_dir),
+                    "--topic",
+                    "普通人用 Codex 做视觉方案",
+                ],
+                check=True,
+            )
+
+            boards = sorted(output_dir.glob("style-board-*.svg"))
+            self.assertEqual(len(boards), 5)
+            self.assertTrue((output_dir / "style-candidates.md").is_file())
+            for board in boards:
+                content = board.read_text(encoding="utf-8")
+                self.assertIn("<svg", content)
+                self.assertIn("style board", content)
+
     def node_modules_path(self):
         return "/Users/dw/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules"
 
