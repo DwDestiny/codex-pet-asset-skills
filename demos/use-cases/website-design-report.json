@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "input": "/Users/dw/Desktop/codex-pet-asset-skills/demos/source-model/usecase-website-source.png",
+  "output": "/Users/dw/Desktop/codex-pet-asset-skills/demos/use-cases/website-design.png",
+  "background_rgb": [
+    238,
+    23,
+    237
+  ],
+  "threshold": 88.0,
+  "feather_threshold": 144.0,
+  "trimmed": true,
+  "padding": 16,
+  "width": 1048,
+  "height": 841,
+  "transparent_pixels": 1119157,
+  "opaque_pixels": 453707
+}

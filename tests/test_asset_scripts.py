@@ -12,6 +12,29 @@ repo_root = Path(__file__).resolve().parents[1]
 
 
 class transparent_asset_generation_tests(unittest.TestCase):
+    def test_demo_use_case_assets_are_transparent_pngs(self):
+        use_case_dir = repo_root / "demos" / "use-cases"
+        expected_assets = [
+            "website-design.png",
+            "presentation-chart.png",
+            "product-onboarding.png",
+            "ecommerce-stickers.png",
+            "game-ui-assets.png",
+        ]
+
+        for asset_name in expected_assets:
+            with self.subTest(asset_name=asset_name):
+                asset_path = use_case_dir / asset_name
+                output = Image.open(asset_path).convert("RGBA")
+                corners = [
+                    output.getpixel((0, 0)),
+                    output.getpixel((output.width - 1, 0)),
+                    output.getpixel((0, output.height - 1)),
+                    output.getpixel((output.width - 1, output.height - 1)),
+                ]
+                self.assertTrue(all(pixel[3] == 0 for pixel in corners))
+                self.assertGreater(output.getchannel("A").getbbox()[2], 0)
+
     def test_chroma_key_cleanup_trims_and_preserves_asset_pixels(self):
         with tempfile.TemporaryDirectory() as tmp_dir:
             tmp_path = Path(tmp_dir)

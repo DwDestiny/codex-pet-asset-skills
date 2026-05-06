@@ -13,6 +13,15 @@ description: Generate transparent-background raster assets with Codex image gene
 
 不适合输出：多帧动画、spritesheet、视频；这些转给 `$animation-sprite-set`。
 
+## 典型使用场景
+
+- 网站设计素材：Landing page、产品官网、博客插画、功能区装饰、空状态插画。
+- PPT / 汇报图表：路演页、数据页、业务复盘、图表旁的视觉解释元素。
+- App / 产品引导：onboarding、权限说明、功能引导、发布说明里的产品插画。
+- 电商 / 社媒贴纸：商品页角标、促销贴纸、社媒封面、公众号配图元素。
+- 游戏 / 互动 UI：小角色、道具、背包图标、按钮素材、单帧 sprite。
+- 视频 / 海报叠加：封面人物、栏目贴片、透明 logo-like 装饰、片头片尾元素。
+
 ## 工作流
 
 1. 明确素材用途、尺寸、主体边界和禁用元素。

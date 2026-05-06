@@ -18,6 +18,7 @@ repo_root = Path(__file__).resolve().parents[1]
 demo_root = repo_root / "demos"
 source_dir = demo_root / "source-model"
 transparent_dir = demo_root / "transparent-assets"
+use_case_dir = demo_root / "use-cases"
 animation_dir = demo_root / "animation-sprite-set"
 frame_dir = animation_dir / "frames"
 qa_dir = animation_dir / "qa"
@@ -345,6 +346,26 @@ def build_animation_demo() -> None:
     )
 
 
+def build_use_case_demos() -> None:
+    use_case_jobs = [
+        ("website-design", "usecase-website-source", 88, 144),
+        ("presentation-chart", "usecase-presentation-source", 88, 144),
+        ("product-onboarding", "usecase-onboarding-source", 88, 144),
+        ("ecommerce-stickers", "usecase-ecommerce-source", 88, 144),
+        ("game-ui-assets", "usecase-game-ui-source", 88, 144),
+    ]
+    for slug, source_slug, threshold, feather_threshold in use_case_jobs:
+        run_transparent_cleanup(
+            source_path=source_dir / f"{source_slug}.png",
+            output_path=use_case_dir / f"{slug}.png",
+            report_path=use_case_dir / f"{slug}-report.json",
+            background=None,
+            threshold=threshold,
+            feather_threshold=feather_threshold,
+            padding=16,
+        )
+
+
 def write_preview() -> None:
     preview_path = preview_dir / "index.html"
     preview_path.write_text(
@@ -387,6 +408,14 @@ def write_preview() -> None:
     <div class="card"><div class="checker"><img src="../transparent-assets/watercolor-tablet.png" alt="watercolor tablet character"></div><p><code>watercolor-tablet.png</code></p></div>
     <div class="card"><div class="checker"><img src="../transparent-assets/cyberpunk-avatar.png" alt="cyberpunk avatar character"></div><p><code>cyberpunk-avatar.png</code></p></div>
   </div>
+  <h2>Usage Scenarios</h2>
+  <div class="grid">
+    <div class="card"><div class="checker"><img src="../use-cases/website-design.png" alt="website design asset"></div><p><code>website-design.png</code></p></div>
+    <div class="card"><div class="checker"><img src="../use-cases/presentation-chart.png" alt="presentation chart asset"></div><p><code>presentation-chart.png</code></p></div>
+    <div class="card"><div class="checker"><img src="../use-cases/product-onboarding.png" alt="product onboarding asset"></div><p><code>product-onboarding.png</code></p></div>
+    <div class="card"><div class="checker"><img src="../use-cases/ecommerce-stickers.png" alt="ecommerce stickers asset"></div><p><code>ecommerce-stickers.png</code></p></div>
+    <div class="card"><div class="checker"><img src="../use-cases/game-ui-assets.png" alt="game UI assets"></div><p><code>game-ui-assets.png</code></p></div>
+  </div>
   <h2>Animation Sprite Set</h2>
   <div class="grid">
     <div class="card"><div class="checker"><img src="../animation-sprite-set/qa/greeting_wave.gif" alt="greeting wave gif"></div><p><code>greeting_wave.gif</code></p></div>
@@ -406,12 +435,18 @@ def main() -> None:
         source_dir / "watercolor-tablet-source.png",
         source_dir / "cyberpunk-avatar-source.png",
         source_dir / "greeting-wave-strip-source.png",
+        source_dir / "usecase-website-source.png",
+        source_dir / "usecase-presentation-source.png",
+        source_dir / "usecase-onboarding-source.png",
+        source_dir / "usecase-ecommerce-source.png",
+        source_dir / "usecase-game-ui-source.png",
     ]
     missing_sources = [str(path) for path in required_sources if not path.is_file()]
     if missing_sources:
         raise SystemExit("missing model-generated source image(s): " + ", ".join(missing_sources))
 
     reset_dir(transparent_dir)
+    reset_dir(use_case_dir)
     reset_dir(animation_dir)
     reset_dir(frame_dir)
     reset_dir(qa_dir)
@@ -432,6 +467,7 @@ def main() -> None:
             feather_threshold=feather_threshold,
         )
 
+    build_use_case_demos()
     build_animation_demo()
     write_preview()
 

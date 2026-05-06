@@ -54,6 +54,18 @@ Use $transparent-asset-generation to create a transparent PNG cartoon character 
 Use $animation-sprite-set to turn this character into a waving GIF and transparent spritesheet.
 ```
 
+### 使用场景
+
+只要素材需要叠到网页、PPT、App、海报、视频或游戏界面上，透明背景就很有用。下面这些案例都来自同一套流程：先用 Codex 生图生成纯色底源图，再清成透明 PNG。
+
+| 场景 | 适合做什么 | 示例 |
+| --- | --- | --- |
+| 网站设计素材 | Landing page、产品官网、博客插画、功能区装饰、空状态插画 | ![website design asset](demos/use-cases/website-design.png) |
+| PPT / 汇报图表 | 路演页、数据页、业务复盘、图表旁的视觉解释元素 | ![presentation chart asset](demos/use-cases/presentation-chart.png) |
+| App / 产品引导 | Onboarding、权限说明、功能引导、发布说明里的产品插画 | ![product onboarding asset](demos/use-cases/product-onboarding.png) |
+| 电商 / 社媒贴纸 | 商品页角标、促销贴纸、社媒封面、小红书/公众号配图元素 | ![ecommerce stickers asset](demos/use-cases/ecommerce-stickers.png) |
+| 游戏 / 互动 UI | 小角色、道具、背包图标、按钮素材、轻动画帧素材 | ![game UI assets](demos/use-cases/game-ui-assets.png) |
+
 ### Demo 效果
 
 透明素材处理：这几张不是脚本画的占位图，而是先用 Codex 生图模型生成纯色背景源图，再清成透明 PNG。
@@ -115,6 +127,7 @@ skills/
 demos/
   source-model/
   transparent-assets/
+  use-cases/
   animation-sprite-set/
   preview/
   process_model_demo_assets.py
@@ -177,6 +190,18 @@ Use $transparent-asset-generation to create a transparent PNG cartoon character 
 Use $animation-sprite-set to turn this character into a waving GIF and transparent spritesheet.
 ```
 
+### Use Cases
+
+Transparent assets are useful anywhere a visual needs to be layered over a website, slide deck, app screen, poster, video, or game UI. The examples below use the same workflow: generate a flat-background source image with Codex, then clean it into a transparent PNG.
+
+| Scenario | Useful for | Example |
+| --- | --- | --- |
+| Website design assets | Landing pages, product sites, blog illustrations, feature sections, empty states | ![website design asset](demos/use-cases/website-design.png) |
+| Slides and report charts | Pitch decks, analytics pages, business reviews, visual chart explainers | ![presentation chart asset](demos/use-cases/presentation-chart.png) |
+| App and product onboarding | Onboarding, permission explainers, feature tours, release-note visuals | ![product onboarding asset](demos/use-cases/product-onboarding.png) |
+| Ecommerce and social stickers | Product-page badges, promo stickers, social covers, newsletter graphics | ![ecommerce stickers asset](demos/use-cases/ecommerce-stickers.png) |
+| Game and interactive UI | Small characters, inventory items, button assets, light animation frame material | ![game UI assets](demos/use-cases/game-ui-assets.png) |
+
 ### Demo
 
 Transparent assets: these are not script-drawn placeholders. They start as Codex model-generated source images on flat removable backgrounds, then get cleaned into alpha PNGs.
@@ -238,6 +263,7 @@ skills/
 demos/
   source-model/
   transparent-assets/
+  use-cases/
   animation-sprite-set/
   preview/
   process_model_demo_assets.py
