@@ -1,0 +1,4 @@
+interface:
+  display_name: "Animation Sprite Set"
+  short_description: "Plan and package continuous animation sprites"
+  default_prompt: "Use $sprite-animation-assets to turn this character into a consistent animated sprite set."

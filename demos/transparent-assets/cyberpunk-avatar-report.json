@@ -1,7 +1,7 @@
 {
   "ok": true,
-  "input": "/Users/dw/Desktop/codex-pet-asset-skills/demos/source-model/cyberpunk-avatar-source.png",
-  "output": "/Users/dw/Desktop/codex-pet-asset-skills/demos/transparent-assets/cyberpunk-avatar.png",
+  "input": "/Users/dw/Desktop/codex-visual-asset-skills/demos/source-model/cyberpunk-avatar-source.png",
+  "output": "/Users/dw/Desktop/codex-visual-asset-skills/demos/transparent-assets/cyberpunk-avatar.png",
   "background_rgb": [
     241,
     23,

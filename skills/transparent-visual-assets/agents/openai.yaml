@@ -1,0 +1,4 @@
+interface:
+  display_name: "Transparent Asset Generation"
+  short_description: "Generate and clean transparent image assets"
+  default_prompt: "Use $transparent-visual-assets to create a transparent-background PNG asset from this image concept."

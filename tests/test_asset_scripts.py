@@ -54,7 +54,7 @@ class transparent_asset_generation_tests(unittest.TestCase):
                     str(
                         repo_root
                         / "skills"
-                        / "transparent-asset-generation"
+                        / "transparent-visual-assets"
                         / "scripts"
                         / "prepare_transparent_asset.py"
                     ),
@@ -104,7 +104,7 @@ class transparent_asset_generation_tests(unittest.TestCase):
                     str(
                         repo_root
                         / "skills"
-                        / "transparent-asset-generation"
+                        / "transparent-visual-assets"
                         / "scripts"
                         / "prepare_transparent_asset.py"
                     ),
@@ -134,7 +134,7 @@ class animation_sprite_set_tests(unittest.TestCase):
         report_path = (
             repo_root
             / "demos"
-            / "animation-sprite-set"
+            / "sprite-animation-assets"
             / "qa"
             / "greeting-wave-continuity-report.json"
         )
@@ -142,8 +142,10 @@ class animation_sprite_set_tests(unittest.TestCase):
 
         self.assertTrue(report["ok"])
         self.assertEqual(report["state"], "greeting_wave")
-        self.assertEqual(report["frame_count"], 12)
+        self.assertEqual(report["frame_count"], 11)
         self.assertEqual(report["active_hand_viewer_side"], "left")
+        self.assertIn("tail segment must not re-raise", " ".join(report["continuity_contract"]))
+        self.assertEqual(report["excluded_source_frame_indexes"], [8])
         self.assertEqual(report["manual_review"], "accepted")
 
     def test_manifest_frames_compose_to_transparent_atlas_and_gifs(self):
@@ -199,7 +201,7 @@ class animation_sprite_set_tests(unittest.TestCase):
                     str(
                         repo_root
                         / "skills"
-                        / "animation-sprite-set"
+                        / "sprite-animation-assets"
                         / "scripts"
                         / "compose_sprite_set.py"
                     ),

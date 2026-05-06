@@ -19,7 +19,7 @@ demo_root = repo_root / "demos"
 source_dir = demo_root / "source-model"
 transparent_dir = demo_root / "transparent-assets"
 use_case_dir = demo_root / "use-cases"
-animation_dir = demo_root / "animation-sprite-set"
+animation_dir = demo_root / "sprite-animation-assets"
 frame_dir = animation_dir / "frames"
 qa_dir = animation_dir / "qa"
 preview_dir = demo_root / "preview"
@@ -27,12 +27,12 @@ preview_dir = demo_root / "preview"
 transparent_script = (
     repo_root
     / "skills"
-    / "transparent-asset-generation"
+    / "transparent-visual-assets"
     / "scripts"
     / "prepare_transparent_asset.py"
 )
 sprite_script = (
-    repo_root / "skills" / "animation-sprite-set" / "scripts" / "compose_sprite_set.py"
+    repo_root / "skills" / "sprite-animation-assets" / "scripts" / "compose_sprite_set.py"
 )
 
 
@@ -161,8 +161,12 @@ def split_strip() -> list[str]:
     with Image.open(source_path) as source_image:
         strip = source_image.convert("RGBA")
 
-    frame_count = 12
-    frame_boxes = detect_foreground_boxes(strip, expected_count=frame_count)
+    detected_frame_count = 12
+    detected_boxes = detect_foreground_boxes(strip, expected_count=detected_frame_count)
+    # Source frame 08 returns to neutral too early, while source frame 09 raises the same hand again.
+    # Dropping frame 08 keeps the tail as one clean lower-to-neutral motion.
+    selected_source_indexes = [0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11]
+    frame_boxes = [detected_boxes[source_index] for source_index in selected_source_indexes]
     raw_frame_dir = animation_dir / "raw-frames"
     reset_dir(raw_frame_dir)
     frame_names: list[str] = []
@@ -293,11 +297,11 @@ def remove_small_alpha_components(path: Path, *, min_area: int = 200) -> None:
 
 def build_animation_demo() -> None:
     frame_names = split_strip()
-    durations_ms = [120, 110, 130, 110, 95, 95, 95, 95, 110, 120, 130, 150]
+    durations_ms = [120, 110, 130, 110, 95, 95, 95, 95, 120, 135, 165]
     manifest = {
         "cell_width": 192,
         "cell_height": 208,
-        "columns": 12,
+        "columns": 11,
         "states": [
             {
                 "name": "greeting_wave",
@@ -333,10 +337,13 @@ def build_animation_demo() -> None:
         "active_hand_viewer_side": "left",
         "continuity_contract": [
             "frames 00-02: neutral, step, nod; no active waving hand",
-            "frames 03-09: only the viewer-left hand is raised and waving",
-            "frames 10-11: viewer-left hand lowers and character returns to neutral",
+            "frames 03-07: only the viewer-left hand is raised and waving",
+            "frames 08-10: viewer-left hand lowers once and returns to neutral",
+            "tail segment must not re-raise the hand after the first lowering frame",
             "viewer-right hand remains down or relaxed throughout the sequence",
         ],
+        "source_frame_indexes": [0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11],
+        "excluded_source_frame_indexes": [8],
         "manual_review": "accepted",
         "detached_artifacts_removed": True,
     }
@@ -374,7 +381,7 @@ def write_preview() -> None:
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Codex Pet Asset Skills Demo</title>
+  <title>Codex Visual Asset Skills Demo</title>
   <style>
     :root { color-scheme: light; font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
     body { margin: 0; background: #f6f3ee; color: #1f2933; }
@@ -400,7 +407,7 @@ def write_preview() -> None:
 </head>
 <body>
 <main>
-  <h1>Codex Pet Asset Skills Demo</h1>
+  <h1>Codex Visual Asset Skills Demo</h1>
   <p>Model-generated source art, processed through the repository skills into transparent PNG assets and a coherent greeting-wave animation set.</p>
   <h2>Transparent Assets</h2>
   <div class="grid">
@@ -418,8 +425,8 @@ def write_preview() -> None:
   </div>
   <h2>Animation Sprite Set</h2>
   <div class="grid">
-    <div class="card"><div class="checker"><img src="../animation-sprite-set/qa/greeting_wave.gif" alt="greeting wave gif"></div><p><code>greeting_wave.gif</code></p></div>
-    <div class="card"><div class="checker"><img src="../animation-sprite-set/greeting-wave-atlas.png" alt="greeting wave atlas"></div><p><code>greeting-wave-atlas.png</code></p></div>
+    <div class="card"><div class="checker"><img src="../sprite-animation-assets/qa/greeting_wave.gif" alt="greeting wave gif"></div><p><code>greeting_wave.gif</code></p></div>
+    <div class="card"><div class="checker"><img src="../sprite-animation-assets/greeting-wave-atlas.png" alt="greeting wave atlas"></div><p><code>greeting-wave-atlas.png</code></p></div>
   </div>
 </main>
 </body>

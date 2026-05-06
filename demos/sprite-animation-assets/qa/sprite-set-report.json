@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "manifest": "/Users/dw/Desktop/codex-visual-asset-skills/demos/sprite-animation-assets/manifest.json",
+  "atlas": {
+    "path": "/Users/dw/Desktop/codex-visual-asset-skills/demos/sprite-animation-assets/greeting-wave-atlas.png",
+    "width": 2112,
+    "height": 208,
+    "columns": 11,
+    "rows": 1,
+    "cell_width": 192,
+    "cell_height": 208
+  },
+  "states": [
+    {
+      "name": "greeting_wave",
+      "row": 0,
+      "frame_count": 11,
+      "durations_ms": [
+        120,
+        110,
+        130,
+        110,
+        95,
+        95,
+        95,
+        95,
+        120,
+        135,
+        165
+      ],
+      "nontransparent_pixels": [
+        7936,
+        8093,
+        7951,
+        8312,
+        8364,
+        8638,
+        8690,
+        8071,
+        8582,
+        8192,
+        7870
+      ]
+    }
+  ],
+  "gif": true
+}

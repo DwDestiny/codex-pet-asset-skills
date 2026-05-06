@@ -1,7 +1,7 @@
 {
   "ok": true,
-  "input": "/Users/dw/Desktop/codex-pet-asset-skills/demos/source-model/watercolor-tablet-source.png",
-  "output": "/Users/dw/Desktop/codex-pet-asset-skills/demos/transparent-assets/watercolor-tablet.png",
+  "input": "/Users/dw/Desktop/codex-visual-asset-skills/demos/source-model/watercolor-tablet-source.png",
+  "output": "/Users/dw/Desktop/codex-visual-asset-skills/demos/transparent-assets/watercolor-tablet.png",
   "background_rgb": [
     18,
     240,

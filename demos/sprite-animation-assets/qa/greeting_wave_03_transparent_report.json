@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "input": "/Users/dw/Desktop/codex-visual-asset-skills/demos/sprite-animation-assets/raw-frames/greeting_wave_source_03.png",
+  "output": "/Users/dw/Desktop/codex-visual-asset-skills/demos/sprite-animation-assets/frames/greeting_wave_03.png",
+  "background_rgb": [
+    11,
+    246,
+    7
+  ],
+  "threshold": 76.0,
+  "feather_threshold": 128.0,
+  "trimmed": true,
+  "padding": 10,
+  "width": 154,
+  "height": 458,
+  "transparent_pixels": 104400,
+  "opaque_pixels": 32436
+}
