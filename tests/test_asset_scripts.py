@@ -107,6 +107,22 @@ class transparent_asset_generation_tests(unittest.TestCase):
 
 
 class animation_sprite_set_tests(unittest.TestCase):
+    def test_demo_continuity_report_records_same_hand_contract(self):
+        report_path = (
+            repo_root
+            / "demos"
+            / "animation-sprite-set"
+            / "qa"
+            / "greeting-wave-continuity-report.json"
+        )
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+
+        self.assertTrue(report["ok"])
+        self.assertEqual(report["state"], "greeting_wave")
+        self.assertEqual(report["frame_count"], 12)
+        self.assertEqual(report["active_hand_viewer_side"], "left")
+        self.assertEqual(report["manual_review"], "accepted")
+
     def test_manifest_frames_compose_to_transparent_atlas_and_gifs(self):
         with tempfile.TemporaryDirectory() as tmp_dir:
             tmp_path = Path(tmp_dir)

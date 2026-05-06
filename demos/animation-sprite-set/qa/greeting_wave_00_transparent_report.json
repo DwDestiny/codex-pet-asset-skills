@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "input": "/Users/dw/Desktop/codex-pet-asset-skills/demos/animation-sprite-set/raw-frames/greeting_wave_source_00.png",
+  "output": "/Users/dw/Desktop/codex-pet-asset-skills/demos/animation-sprite-set/frames/greeting_wave_00.png",
+  "background_rgb": [
+    10,
+    246,
+    6
+  ],
+  "threshold": 76.0,
+  "feather_threshold": 128.0,
+  "trimmed": true,
+  "padding": 10,
+  "width": 137,
+  "height": 462,
+  "transparent_pixels": 92855,
+  "opaque_pixels": 32397
+}

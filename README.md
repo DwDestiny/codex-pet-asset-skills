@@ -62,11 +62,11 @@ Use $animation-sprite-set to turn this character into a waving GIF and transpare
 | --- | --- | --- |
 | ![polished anime character](demos/transparent-assets/polished-teal.png) | ![watercolor tablet character](demos/transparent-assets/watercolor-tablet.png) | ![cyberpunk avatar character](demos/transparent-assets/cyberpunk-avatar.png) |
 
-连续动画素材：先用 Codex 生图模型生成同一角色的连续动作条，再拆帧、去背景、组合成 GIF 和 atlas。
+连续动画素材：先用 Codex 生图模型生成同一角色的 12 帧动作条，再拆帧、去背景、检查同一只手的动作连续性，最后组合成 GIF 和 atlas。
 
 | GIF Preview | Transparent Atlas |
 | --- | --- |
-| ![waving gif](demos/animation-sprite-set/qa/waving.gif) | ![waving atlas](demos/animation-sprite-set/waving-atlas.png) |
+| ![greeting wave gif](demos/animation-sprite-set/qa/greeting_wave.gif) | ![greeting wave atlas](demos/animation-sprite-set/greeting-wave-atlas.png) |
 
 本地预览页：
 
@@ -185,11 +185,11 @@ Transparent assets: these are not script-drawn placeholders. They start as Codex
 | --- | --- | --- |
 | ![polished anime character](demos/transparent-assets/polished-teal.png) | ![watercolor tablet character](demos/transparent-assets/watercolor-tablet.png) | ![cyberpunk avatar character](demos/transparent-assets/cyberpunk-avatar.png) |
 
-Animation sprite set: generate a continuous action strip with Codex, split it into frames, remove the background, then package it into a GIF preview and atlas.
+Animation sprite set: generate a 12-frame continuous action strip with Codex, split it into frames, remove the background, check same-hand continuity, then package it into a GIF preview and atlas.
 
 | GIF Preview | Transparent Atlas |
 | --- | --- |
-| ![waving gif](demos/animation-sprite-set/qa/waving.gif) | ![waving atlas](demos/animation-sprite-set/waving-atlas.png) |
+| ![greeting wave gif](demos/animation-sprite-set/qa/greeting_wave.gif) | ![greeting wave atlas](demos/animation-sprite-set/greeting-wave-atlas.png) |
 
 Local preview page:
 

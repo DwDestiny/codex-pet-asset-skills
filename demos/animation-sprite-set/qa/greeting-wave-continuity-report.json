@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "state": "greeting_wave",
+  "frame_count": 12,
+  "active_hand_viewer_side": "left",
+  "continuity_contract": [
+    "frames 00-02: neutral, step, nod; no active waving hand",
+    "frames 03-09: only the viewer-left hand is raised and waving",
+    "frames 10-11: viewer-left hand lowers and character returns to neutral",
+    "viewer-right hand remains down or relaxed throughout the sequence"
+  ],
+  "manual_review": "accepted",
+  "detached_artifacts_removed": true
+}
