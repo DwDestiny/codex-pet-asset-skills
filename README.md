@@ -56,13 +56,13 @@ Use $animation-sprite-set to turn this character into a waving GIF and transpare
 
 ### Demo 效果
 
-透明素材处理：先生成纯色背景源图，再清成透明 PNG。
+透明素材处理：这几张不是脚本画的占位图，而是先用 Codex 生图模型生成纯色背景源图，再清成透明 PNG。
 
-| Line Art | Pixel | Neon | Watercolor |
-| --- | --- | --- | --- |
-| ![line art designer](demos/transparent-assets/line-art-designer.png) | ![pixel heroine](demos/transparent-assets/pixel-heroine.png) | ![neon developer](demos/transparent-assets/neon-developer.png) | ![watercolor muse](demos/transparent-assets/watercolor-muse.png) |
+| Polished Anime | Watercolor | Cyberpunk |
+| --- | --- | --- |
+| ![polished anime character](demos/transparent-assets/polished-teal.png) | ![watercolor tablet character](demos/transparent-assets/watercolor-tablet.png) | ![cyberpunk avatar character](demos/transparent-assets/cyberpunk-avatar.png) |
 
-连续动画素材：透明帧组合成 GIF 和 atlas。
+连续动画素材：先用 Codex 生图模型生成同一角色的连续动作条，再拆帧、去背景、组合成 GIF 和 atlas。
 
 | GIF Preview | Transparent Atlas |
 | --- | --- |
@@ -113,9 +113,11 @@ skills/
     scripts/compose_sprite_set.py
     references/codex-pet-rows.md
 demos/
+  source-model/
   transparent-assets/
   animation-sprite-set/
   preview/
+  process_model_demo_assets.py
 tests/
   test_asset_scripts.py
 ```
@@ -177,13 +179,13 @@ Use $animation-sprite-set to turn this character into a waving GIF and transpare
 
 ### Demo
 
-Transparent assets: generate on a flat removable background, then clean into alpha PNGs.
+Transparent assets: these are not script-drawn placeholders. They start as Codex model-generated source images on flat removable backgrounds, then get cleaned into alpha PNGs.
 
-| Line Art | Pixel | Neon | Watercolor |
-| --- | --- | --- | --- |
-| ![line art designer](demos/transparent-assets/line-art-designer.png) | ![pixel heroine](demos/transparent-assets/pixel-heroine.png) | ![neon developer](demos/transparent-assets/neon-developer.png) | ![watercolor muse](demos/transparent-assets/watercolor-muse.png) |
+| Polished Anime | Watercolor | Cyberpunk |
+| --- | --- | --- |
+| ![polished anime character](demos/transparent-assets/polished-teal.png) | ![watercolor tablet character](demos/transparent-assets/watercolor-tablet.png) | ![cyberpunk avatar character](demos/transparent-assets/cyberpunk-avatar.png) |
 
-Animation sprite set: package transparent frames into a GIF preview and atlas.
+Animation sprite set: generate a continuous action strip with Codex, split it into frames, remove the background, then package it into a GIF preview and atlas.
 
 | GIF Preview | Transparent Atlas |
 | --- | --- |
@@ -234,9 +236,11 @@ skills/
     scripts/compose_sprite_set.py
     references/codex-pet-rows.md
 demos/
+  source-model/
   transparent-assets/
   animation-sprite-set/
   preview/
+  process_model_demo_assets.py
 tests/
   test_asset_scripts.py
 ```

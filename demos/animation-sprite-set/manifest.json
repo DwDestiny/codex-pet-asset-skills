@@ -7,12 +7,12 @@
       "name": "waving",
       "row": 0,
       "frames": [
-        "wave_00.png",
-        "wave_01.png",
-        "wave_02.png",
-        "wave_03.png",
-        "wave_04.png",
-        "wave_05.png"
+        "waving_00.png",
+        "waving_01.png",
+        "waving_02.png",
+        "waving_03.png",
+        "waving_04.png",
+        "waving_05.png"
       ],
       "durations_ms": [
         140,

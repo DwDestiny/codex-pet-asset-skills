@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "input": "/Users/dw/Desktop/codex-pet-asset-skills/demos/animation-sprite-set/raw-frames/waving_source_04.png",
+  "output": "/Users/dw/Desktop/codex-pet-asset-skills/demos/animation-sprite-set/frames/waving_04.png",
+  "background_rgb": [
+    4,
+    248,
+    6
+  ],
+  "threshold": 76.0,
+  "feather_threshold": 128.0,
+  "trimmed": true,
+  "padding": 10,
+  "width": 319,
+  "height": 536,
+  "transparent_pixels": 162985,
+  "opaque_pixels": 99103
+}

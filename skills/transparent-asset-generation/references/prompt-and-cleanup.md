@@ -24,6 +24,7 @@
 ## 失败处理
 
 - 背景残留：提高 `--threshold`，或换更远的背景色重生图。
+- 边缘有背景色毛边：加 `--feather-threshold`，通常设置为 `--threshold` 往上 40 到 70。
 - 主体破损：降低 `--threshold`，或重生图并禁止主体使用背景色。
 - 边缘半透明脏：让生图用“hard-edged, flat color, no glow, no blur”。
 - 阴影无法抠干净：重生图，明确 “no shadow, no floor, no contact shadow”。

@@ -64,6 +64,47 @@ class transparent_asset_generation_tests(unittest.TestCase):
             self.assertEqual(report["background_rgb"], [255, 0, 255])
             self.assertGreater(report["opaque_pixels"], 0)
 
+    def test_chroma_key_cleanup_can_feather_background_fringe(self):
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            source_path = tmp_path / "source.png"
+            output_path = tmp_path / "asset.png"
+
+            image = Image.new("RGB", (5, 3), "#ff00ff")
+            image.putpixel((1, 1), (250, 35, 235))
+            image.putpixel((2, 1), (20, 80, 220))
+            image.save(source_path)
+
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(
+                        repo_root
+                        / "skills"
+                        / "transparent-asset-generation"
+                        / "scripts"
+                        / "prepare_transparent_asset.py"
+                    ),
+                    "--input",
+                    str(source_path),
+                    "--output",
+                    str(output_path),
+                    "--background",
+                    "#ff00ff",
+                    "--threshold",
+                    "24",
+                    "--feather-threshold",
+                    "70",
+                ],
+                check=True,
+            )
+
+            output = Image.open(output_path).convert("RGBA")
+            self.assertEqual(output.getpixel((0, 0)), (0, 0, 0, 0))
+            self.assertGreater(output.getpixel((1, 1))[3], 0)
+            self.assertLess(output.getpixel((1, 1))[3], 255)
+            self.assertEqual(output.getpixel((2, 1))[3], 255)
+
 
 class animation_sprite_set_tests(unittest.TestCase):
     def test_manifest_frames_compose_to_transparent_atlas_and_gifs(self):

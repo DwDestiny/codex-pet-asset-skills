@@ -45,6 +45,7 @@ python "${CODEX_HOME:-$HOME/.codex}/skills/transparent-asset-generation/scripts/
   --output /absolute/path/asset.png \
   --background "#FF00FF" \
   --threshold 24 \
+  --feather-threshold 48 \
   --trim \
   --padding 8 \
   --report /absolute/path/report.json
@@ -54,6 +55,7 @@ python "${CODEX_HOME:-$HOME/.codex}/skills/transparent-asset-generation/scripts/
 
 - `--background`：要移除的纯色背景；不传时用四角颜色估算。
 - `--threshold`：颜色容差。背景边缘残留就调大；主体被吃掉就调小或重生图换背景色。
+- `--feather-threshold`：可选的边缘柔化容差，用来淡化生图抗锯齿留下的背景色毛边。
 - `--trim` 和 `--padding`：裁掉透明边缘并保留一点安全留白。
 
 脚本只做背景清理，不会补画、重绘、扩图或创造新素材。

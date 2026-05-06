@@ -46,22 +46,34 @@ def remove_background(
     *,
     background_rgb: tuple[int, int, int],
     threshold: float,
+    feather_threshold: float | None,
 ) -> tuple[Image.Image, int, int]:
     rgba_image = image.convert("RGBA")
     pixels = rgba_image.load()
     transparent_pixels = 0
     opaque_pixels = 0
+    feather_span = None
+    if feather_threshold is not None:
+        if feather_threshold < threshold:
+            raise SystemExit("--feather-threshold must be >= --threshold")
+        feather_span = max(1.0, feather_threshold - threshold)
 
     for y_index in range(rgba_image.height):
         for x_index in range(rgba_image.width):
             red, green, blue, alpha = pixels[x_index, y_index]
+            distance = color_distance((red, green, blue), background_rgb)
             if alpha == 0:
                 pixels[x_index, y_index] = (0, 0, 0, 0)
                 transparent_pixels += 1
                 continue
-            if color_distance((red, green, blue), background_rgb) <= threshold:
+            if distance <= threshold:
                 pixels[x_index, y_index] = (0, 0, 0, 0)
                 transparent_pixels += 1
+            elif feather_threshold is not None and distance <= feather_threshold:
+                softness = (distance - threshold) / feather_span
+                softened_alpha = max(1, min(255, round(alpha * softness * softness)))
+                pixels[x_index, y_index] = (red, green, blue, softened_alpha)
+                opaque_pixels += 1
             else:
                 opaque_pixels += 1
 
@@ -103,6 +115,11 @@ def main() -> None:
         help="Background color to remove, as #RRGGBB. Defaults to the average corner color.",
     )
     parser.add_argument("--threshold", type=positive_float, default=24.0)
+    parser.add_argument(
+        "--feather-threshold",
+        type=positive_float,
+        help="Optional wider color distance for softening anti-aliased background fringes.",
+    )
     parser.add_argument("--trim", action="store_true", help="Crop transparent edges after cleanup.")
     parser.add_argument("--padding", type=non_negative_int, default=0)
     parser.add_argument("--report", help="Optional JSON report path.")
@@ -128,6 +145,7 @@ def main() -> None:
         source_image,
         background_rgb=background_rgb,
         threshold=args.threshold,
+        feather_threshold=args.feather_threshold,
     )
     final_image = trim_image(cleaned_image, args.padding) if args.trim else cleaned_image
 
@@ -140,6 +158,7 @@ def main() -> None:
         "output": str(output_path),
         "background_rgb": list(background_rgb),
         "threshold": args.threshold,
+        "feather_threshold": args.feather_threshold,
         "trimmed": bool(args.trim),
         "padding": args.padding,
         "width": final_image.width,
