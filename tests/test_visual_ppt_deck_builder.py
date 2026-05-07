@@ -200,6 +200,10 @@ class visual_ppt_deck_builder_tests(unittest.TestCase):
             self.assertGreaterEqual(spec["readable_area_policy"]["min_body_text_contrast_ratio"], 4.5)
             self.assertGreaterEqual(spec["readable_area_policy"]["min_chart_stroke_contrast_ratio"], 3.0)
             self.assertIn("不能靠加框补救", spec["readable_area_policy"]["anti_rescue_box_rule"])
+            self.assertEqual(spec["coordinate_blueprint_policy"]["coordinate_unit"], "inches_16_9")
+            self.assertEqual(spec["coordinate_blueprint_policy"]["blueprint_required_before_background"], True)
+            self.assertEqual(spec["coordinate_blueprint_policy"]["background_prompt_must_include_zone_coordinates"], True)
+            self.assertIn("先规划区域", spec["coordinate_blueprint_policy"]["layout_first_rule"])
             expected_names = ["简约高级", "活泼动漫", "数据分析", "国潮东方", "未来科技"]
             self.assertEqual([candidate["name"] for candidate in spec["candidates"]], expected_names)
             seen_sample_paths = set()
@@ -232,6 +236,9 @@ class visual_ppt_deck_builder_tests(unittest.TestCase):
                 prompt_content = prompt_path.read_text(encoding="utf-8")
                 self.assertIn("Codex image generation", prompt_content)
                 self.assertIn("background image only", prompt_content)
+                self.assertIn("Coordinate blueprint", prompt_content)
+                self.assertIn("text_zone", prompt_content)
+                self.assertIn("chart_zone", prompt_content)
                 self.assertNotIn("Use the following sample Chinese content", prompt_content)
                 self.assertNotIn("Chart labels:", prompt_content)
                 self.assertIn(topic, prompt_content)
@@ -251,7 +258,29 @@ class visual_ppt_deck_builder_tests(unittest.TestCase):
                 self.assertIn("no_plain_white_box_contract", candidate)
                 self.assertIn("readability_contract", candidate)
                 self.assertIn("safe_zone_plan", candidate)
+                self.assertIn("coordinate_blueprint", candidate)
                 self.assertIn("large_surface_count", candidate)
+                blueprint = candidate["coordinate_blueprint"]
+                self.assertEqual(blueprint["unit"], "inches")
+                self.assertAlmostEqual(blueprint["slide"]["width"], 13.333, places=3)
+                self.assertAlmostEqual(blueprint["slide"]["height"], 7.5, places=2)
+                for zone_name in [
+                    "title_zone",
+                    "text_zone",
+                    "chart_zone",
+                    "metrics_zone",
+                    "visual_focus_zone",
+                    "protected_empty_zone",
+                ]:
+                    self.assertIn(zone_name, blueprint["zones"])
+                    zone = blueprint["zones"][zone_name]
+                    for key in ["x", "y", "w", "h"]:
+                        self.assertIn(key, zone)
+                        self.assertIsInstance(zone[key], (int, float))
+                    self.assertGreater(zone["w"], 0)
+                    self.assertGreater(zone["h"], 0)
+                    self.assertLessEqual(zone["x"] + zone["w"], 13.333 + 0.001)
+                    self.assertLessEqual(zone["y"] + zone["h"], 7.5 + 0.001)
                 self.assertEqual(candidate["large_surface_count"]["content_panels"], 0)
                 self.assertEqual(candidate["large_surface_count"]["chart_panels"], 0)
                 self.assertEqual(candidate["large_surface_count"]["framed_metric_tiles"], 0)
@@ -266,6 +295,7 @@ class visual_ppt_deck_builder_tests(unittest.TestCase):
                 self.assertIn("chart_zone", candidate["safe_zone_plan"])
                 self.assertIn("integrated_surface_strategy", candidate["sample_slide_spec"])
                 self.assertIn("readable_area_strategy", candidate["sample_slide_spec"])
+                self.assertIn("coordinate_blueprint_strategy", candidate["sample_slide_spec"])
                 self.assertEqual(candidate["sample_slide_spec"]["forbidden_large_panel_count"], 0)
                 self.assertEqual(candidate["sample_slide_spec"]["forbidden_framed_metric_tile_count"], 0)
             markdown = (output_dir / "style-candidates.md").read_text(encoding="utf-8")
@@ -280,6 +310,8 @@ class visual_ppt_deck_builder_tests(unittest.TestCase):
             self.assertIn("指标描边框：0", markdown)
             self.assertIn("阅读安全区", markdown)
             self.assertIn("图表安全区", markdown)
+            self.assertIn("坐标蓝图", markdown)
+            self.assertIn("title_zone", markdown)
             self.assertIn("不能靠加框补救", markdown)
             self.assertIn("2026 AI 应用趋势调研", markdown)
             for banned_text in ["Topic", "Style", "Assets", "TODO", "TBD", "占位"]:

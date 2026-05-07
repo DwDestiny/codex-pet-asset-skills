@@ -377,13 +377,283 @@ function build_sample_content(topic, candidate) {
   };
 }
 
-function build_background_prompt(candidate, topic) {
+function build_coordinate_blueprint(candidate) {
+  const shared = {
+    unit: "inches",
+    slide: { width: slide_width, height: slide_height },
+    planning_rule: "先规划区域，再生成背景、透明素材、文案和图表；所有可编辑元素必须按坐标蓝图落版。",
+  };
+  const blueprints = {
+    "minimal-premium": {
+      title_zone: {
+        x: 0.72,
+        y: 0.72,
+        w: 5.9,
+        h: 1.15,
+        role: "主标题和副标题，保持建筑线条低对比。",
+        capacity: "主标题 1 行，副标题 1 行。",
+      },
+      text_zone: {
+        x: 0.82,
+        y: 2.3,
+        w: 4.95,
+        h: 2.2,
+        role: "正文和三条要点，浅色低纹理留白。",
+        capacity: "正文 55 个中文字符以内，3 条短要点。",
+      },
+      chart_zone: {
+        x: 7.05,
+        y: 1.5,
+        w: 4.8,
+        h: 4.75,
+        role: "开放式柱状图或折线图，背景仅保留细线透视。",
+        capacity: "4 组柱状图，坐标标签 4 个。",
+      },
+      metrics_zone: {
+        x: 0.82,
+        y: 5.42,
+        w: 5.5,
+        h: 0.95,
+        role: "三组开放式指标，不加描边框。",
+        capacity: "3 个大数字，每个 1 个短标签。",
+      },
+      visual_focus_zone: {
+        x: 8.55,
+        y: 0,
+        w: 4.5,
+        h: 7.5,
+        role: "建筑玻璃、空间透视和低对比装饰主视觉。",
+        capacity: "不能承载文字。",
+      },
+      protected_empty_zone: {
+        x: 5.9,
+        y: 0.5,
+        w: 1,
+        h: 6.4,
+        role: "内容区和图表区之间的呼吸带。",
+        capacity: "保持干净，不放正文或复杂纹理。",
+      },
+    },
+    "playful-anime": {
+      title_zone: {
+        x: 0.72,
+        y: 0.72,
+        w: 5.4,
+        h: 1.05,
+        role: "课程标题和轻量副标题，避开角色脸部。",
+        capacity: "主标题 1 行，副标题 1 行。",
+      },
+      text_zone: {
+        x: 3,
+        y: 2.25,
+        w: 4.1,
+        h: 2.3,
+        role: "学习目标正文，浅色云朵或黑板低纹理区域。",
+        capacity: "正文 45 个中文字符以内，3 条短要点。",
+      },
+      chart_zone: {
+        x: 7.25,
+        y: 1.85,
+        w: 4.65,
+        h: 4.35,
+        role: "彩色开放式图表，背景使用浅色课堂留白。",
+        capacity: "4 组柱状图，标签用深灰。",
+      },
+      metrics_zone: {
+        x: 2.9,
+        y: 5.45,
+        w: 5.55,
+        h: 0.95,
+        role: "三组彩色指标，像贴纸但不画外框。",
+        capacity: "3 个大数字，每个 1 个短标签。",
+      },
+      visual_focus_zone: {
+        x: 0,
+        y: 3,
+        w: 3,
+        h: 4.5,
+        role: "卡通角色和学习道具主视觉。",
+        capacity: "角色不遮挡文字区。",
+      },
+      protected_empty_zone: {
+        x: 3,
+        y: 2,
+        w: 4.2,
+        h: 3.2,
+        role: "正文阅读区，背景只能是低噪声浅色过渡。",
+        capacity: "保持干净，不放高饱和装饰。",
+      },
+    },
+    "data-analytics": {
+      title_zone: {
+        x: 0.72,
+        y: 0.75,
+        w: 5.7,
+        h: 1.15,
+        role: "报告标题和副标题，深色低纹理网格。",
+        capacity: "主标题 1 行，副标题 1 行。",
+      },
+      text_zone: {
+        x: 0.82,
+        y: 2.35,
+        w: 4.9,
+        h: 2.25,
+        role: "关键指标解释和要点，背景为暗色干净留白。",
+        capacity: "正文 55 个中文字符以内，3 条短要点。",
+      },
+      chart_zone: {
+        x: 7,
+        y: 1.45,
+        w: 4.9,
+        h: 4.9,
+        role: "发光数据图表区，避开强眩光中心。",
+        capacity: "4 组图表，坐标标签 4 个。",
+      },
+      metrics_zone: {
+        x: 0.82,
+        y: 5.45,
+        w: 5.55,
+        h: 0.95,
+        role: "开放式 KPI 数字组，不使用卡片。",
+        capacity: "3 个大数字，每个 1 个短标签。",
+      },
+      visual_focus_zone: {
+        x: 7,
+        y: 2.1,
+        w: 5.7,
+        h: 4.8,
+        role: "蓝色数据波、网格和发光柱体主视觉。",
+        capacity: "装饰线不能穿过标签。",
+      },
+      protected_empty_zone: {
+        x: 5.75,
+        y: 0.7,
+        w: 1.05,
+        h: 6,
+        role: "左右信息分区的暗色过渡带。",
+        capacity: "保持低对比。",
+      },
+    },
+    "oriental-heritage": {
+      title_zone: {
+        x: 0.72,
+        y: 0.75,
+        w: 5.4,
+        h: 1.15,
+        role: "东方品牌标题，宣纸留白和朱红题签。",
+        capacity: "主标题 1 行，副标题 1 行。",
+      },
+      text_zone: {
+        x: 3.05,
+        y: 2.2,
+        w: 3.9,
+        h: 2.45,
+        role: "趋势脉络正文，宣纸低纹理留白。",
+        capacity: "正文 50 个中文字符以内，3 条短要点。",
+      },
+      chart_zone: {
+        x: 7.35,
+        y: 1.55,
+        w: 4.65,
+        h: 4.55,
+        role: "国潮配色开放式图表，避开山水密集线条。",
+        capacity: "4 组柱状图，标签 4 个。",
+      },
+      metrics_zone: {
+        x: 2.35,
+        y: 5.45,
+        w: 5.55,
+        h: 0.95,
+        role: "三组朱红/墨黑指标，不加框。",
+        capacity: "3 个大数字，每个 1 个短标签。",
+      },
+      visual_focus_zone: {
+        x: 0,
+        y: 1.8,
+        w: 3,
+        h: 5.4,
+        role: "山水、梅枝或器物剪影主视觉。",
+        capacity: "不能穿过正文行。",
+      },
+      protected_empty_zone: {
+        x: 7.1,
+        y: 0.85,
+        w: 5.2,
+        h: 5.2,
+        role: "图表阅读区，保留浅纸色和淡墨过渡。",
+        capacity: "不放强水墨纹理。",
+      },
+    },
+    "future-tech": {
+      title_zone: {
+        x: 0.72,
+        y: 0.75,
+        w: 5.7,
+        h: 1.15,
+        role: "发布会标题和副标题，深色净空。",
+        capacity: "主标题 1 行，副标题 1 行。",
+      },
+      text_zone: {
+        x: 0.82,
+        y: 2.35,
+        w: 4.9,
+        h: 2.25,
+        role: "能力模块说明，避开霓虹强光。",
+        capacity: "正文 55 个中文字符以内，3 条短要点。",
+      },
+      chart_zone: {
+        x: 7,
+        y: 1.45,
+        w: 4.9,
+        h: 4.9,
+        role: "霓虹图表区，背景为低纹理玻璃暗面。",
+        capacity: "4 组柱状图，坐标标签 4 个。",
+      },
+      metrics_zone: {
+        x: 0.82,
+        y: 5.45,
+        w: 5.55,
+        h: 0.95,
+        role: "开放式科技指标数字，不加玻璃卡片框。",
+        capacity: "3 个大数字，每个 1 个短标签。",
+      },
+      visual_focus_zone: {
+        x: 7,
+        y: 2.1,
+        w: 5.7,
+        h: 4.8,
+        role: "AI 芯片平台、光轨和全息主视觉。",
+        capacity: "光源避开标签和柱体顶部。",
+      },
+      protected_empty_zone: {
+        x: 5.75,
+        y: 0.7,
+        w: 1.05,
+        h: 6,
+        role: "左右内容之间的暗色呼吸带。",
+        capacity: "保持干净，不放强光。",
+      },
+    },
+  };
+  return { ...shared, zones: blueprints[candidate.slug] };
+}
+
+function format_coordinate_zone(zone_name, zone) {
+  return `${zone_name}: x=${zone.x}, y=${zone.y}, w=${zone.w}, h=${zone.h}; role=${zone.role}; capacity=${zone.capacity}`;
+}
+
+function build_background_prompt(candidate, topic, coordinate_blueprint) {
+  const zone_lines = Object.entries(coordinate_blueprint.zones).map(([zone_name, zone]) =>
+    format_coordinate_zone(zone_name, zone)
+  );
   return [
     `Codex image generation prompt for ${candidate.name}.`,
     "",
     `Create a 16:9 PowerPoint background image only for a deck about: ${topic}.`,
     `Visual direction: ${candidate.prompt_seed}.`,
     "No readable text, no letters, no numbers, no fake UI labels, no chart labels, no titles, no subtitles.",
+    "Coordinate blueprint uses inches on a 13.333 x 7.5 slide. Design the background around these zones before adding visual detail:",
+    ...zone_lines,
     "Reserve deliberate text-safe zones and chart-safe zones: low-detail, low-noise areas with smooth tonal transitions, not blank boxes.",
     "Leave clean whitespace where editable PPT title, body copy, open metric numbers, and chart labels can be placed later without any card frames.",
     "Build gentle light-to-dark or dark-to-light transition areas behind future text and chart strokes so the final PPT remains readable without adding rescue panels.",
@@ -413,7 +683,7 @@ function build_safe_zone_plan(candidate) {
   };
 }
 
-function build_sample_slide_spec(candidate, content) {
+function build_sample_slide_spec(candidate, content, coordinate_blueprint) {
   return {
     layout: "style_candidate_sample",
     title: content.title,
@@ -427,6 +697,8 @@ function build_sample_slide_spec(candidate, content) {
       "用背景留白、开放式信息层、无容器图表和无描边指标数字组组成页面，避免把内容装进框里。",
     readable_area_strategy:
       "先让背景提供文本安全区、图表安全区和低纹理过渡区，再叠加可编辑文本和图表；不能靠加框补救可读性。",
+    coordinate_blueprint_strategy:
+      `先规划区域再生成背景；标题、正文、指标和图表分别落在 ${Object.keys(coordinate_blueprint.zones).join("、")} 内，背景必须按这些坐标预留干净区域。`,
     forbidden_large_panel_count: 0,
     forbidden_framed_metric_tile_count: 0,
   };
@@ -435,6 +707,7 @@ function build_sample_slide_spec(candidate, content) {
 function build_candidate(candidate_template, topic) {
   const prompt_file = `prompts/background-${candidate_template.slug}.md`;
   const content = build_sample_content(topic, candidate_template);
+  const coordinate_blueprint = build_coordinate_blueprint(candidate_template);
   return {
     slug: candidate_template.slug,
     name: candidate_template.name,
@@ -446,12 +719,13 @@ function build_candidate(candidate_template, topic) {
       `assets/transparent-${candidate_template.slug}-accent-02.png`,
     ],
     prompt_file,
-    image_generation_prompt: build_background_prompt(candidate_template, topic),
+    image_generation_prompt: build_background_prompt(candidate_template, topic, coordinate_blueprint),
     palette: candidate_template.palette,
     best_for: candidate_template.best_for,
     visual_direction: candidate_template.visual_direction,
     sample_content: content,
-    sample_slide_spec: build_sample_slide_spec(candidate_template, content),
+    sample_slide_spec: build_sample_slide_spec(candidate_template, content, coordinate_blueprint),
+    coordinate_blueprint,
     raster_layers: candidate_template.raster_layers,
     transparent_assets: candidate_template.transparent_assets,
     editable_layers: candidate_template.editable_layers,
@@ -689,12 +963,24 @@ function write_markdown(output_dir, topic, candidates) {
     lines.push(`- 融合策略：${candidate.surface_strategy}`);
     lines.push(`- 阅读安全区：${candidate.safe_zone_plan.text_zone}`);
     lines.push(`- 图表安全区：${candidate.safe_zone_plan.chart_zone}`);
+    lines.push(
+      `- 坐标蓝图：单位 ${candidate.coordinate_blueprint.unit}，页面 ${candidate.coordinate_blueprint.slide.width} x ${candidate.coordinate_blueprint.slide.height}`
+    );
+    for (const zone_name of ["title_zone", "text_zone", "chart_zone", "metrics_zone", "visual_focus_zone", "protected_empty_zone"]) {
+      const zone = candidate.coordinate_blueprint.zones[zone_name];
+      lines.push(
+        `- ${zone_name}：x=${zone.x}, y=${zone.y}, w=${zone.w}, h=${zone.h}；${zone.role}；${zone.capacity}`
+      );
+    }
     lines.push(`- 可读性契约：${candidate.readability_contract}`);
     lines.push(`- 白框约束：${candidate.no_plain_white_box_contract}`);
     lines.push(`- 大面积正文容器：${candidate.large_surface_count.content_panels}`);
     lines.push(`- 大面积图表容器：${candidate.large_surface_count.chart_panels}`);
     lines.push(`- 指标描边框：${candidate.large_surface_count.framed_metric_tiles}`);
     lines.push("");
+  }
+  if (lines[lines.length - 1] === "") {
+    lines.pop();
   }
   fs.writeFileSync(path.join(output_dir, "style-candidates.md"), `${lines.join("\n")}\n`, "utf8");
 }
@@ -716,6 +1002,12 @@ function write_spec(output_dir, topic, candidates) {
       min_body_text_contrast_ratio: 4.5,
       min_chart_stroke_contrast_ratio: 3.0,
       anti_rescue_box_rule: "不能靠加框补救可读性；必须先通过背景留白、低纹理过渡区和字色/线色选择解决。",
+    },
+    coordinate_blueprint_policy: {
+      coordinate_unit: "inches_16_9",
+      blueprint_required_before_background: true,
+      background_prompt_must_include_zone_coordinates: true,
+      layout_first_rule: "先规划区域，再生成背景、透明素材、文案和图表；所有可编辑元素按坐标蓝图落版。",
     },
     large_surface_policy: {
       max_large_content_panels: 0,
