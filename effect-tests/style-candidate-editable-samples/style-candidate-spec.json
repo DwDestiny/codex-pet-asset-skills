@@ -5,6 +5,11 @@
   "preview_rule": "PNG 预览必须由对应 PPTX 样板渲染导出，不能直接使用整页生图作为候选。",
   "ppt_contract": "PPTX 样板中的标题、正文、指标、图表标签和关键注释必须可编辑；图片只承担背景、透明素材和装饰层。",
   "visual_quality_contract": "候选必须达到融合式版面：背景、文本、指标和图表属于同一视觉系统；禁止大白框贴背景，避免两个大面积纯白矩形分别承载正文和图表。",
+  "large_surface_policy": {
+    "max_large_content_panels": 0,
+    "max_large_chart_panels": 0,
+    "allowed_small_metric_tiles": true
+  },
   "candidates": [
     {
       "slug": "minimal-premium",
@@ -93,7 +98,8 @@
           "数据",
           "组织"
         ],
-        "integrated_surface_strategy": "用开放式信息层、半透明融合面、风格化图表区和小型指标组组成页面，避免两个大白框贴在背景上。"
+        "integrated_surface_strategy": "用开放式信息层、无容器图表和小型指标组组成页面，避免两个大白框贴在背景上。",
+        "forbidden_large_panel_count": 0
       },
       "raster_layers": [
         "浅灰建筑摄影感背景",
@@ -115,7 +121,11 @@
       "editable_text_contract": "标题、副标题、正文、要点、指标数字、指标标签和图表标签必须作为 PPT 文本对象生成，用户能在 PowerPoint 中直接改。",
       "asset_layer_contract": "背景和装饰只能作为独立 raster/transparent image assets 叠加，不得承载正式正文、关键数字或图表标签。",
       "surface_strategy": "采用融合式版面：文本、指标和图表嵌入背景留白、光带或纸纹/玻璃层中，形成同一视觉系统。",
-      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。"
+      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。",
+      "large_surface_count": {
+        "content_panels": 0,
+        "chart_panels": 0
+      }
     },
     {
       "slug": "playful-anime",
@@ -204,7 +214,8 @@
           "练习",
           "复盘"
         ],
-        "integrated_surface_strategy": "用开放式信息层、半透明融合面、风格化图表区和小型指标组组成页面，避免两个大白框贴在背景上。"
+        "integrated_surface_strategy": "用开放式信息层、无容器图表和小型指标组组成页面，避免两个大白框贴在背景上。",
+        "forbidden_large_panel_count": 0
       },
       "raster_layers": [
         "明亮教室场景背景",
@@ -226,7 +237,11 @@
       "editable_text_contract": "标题、副标题、正文、要点、指标数字、指标标签和图表标签必须作为 PPT 文本对象生成，用户能在 PowerPoint 中直接改。",
       "asset_layer_contract": "背景和装饰只能作为独立 raster/transparent image assets 叠加，不得承载正式正文、关键数字或图表标签。",
       "surface_strategy": "采用融合式版面：文本、指标和图表嵌入背景留白、光带或纸纹/玻璃层中，形成同一视觉系统。",
-      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。"
+      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。",
+      "large_surface_count": {
+        "content_panels": 0,
+        "chart_panels": 0
+      }
     },
     {
       "slug": "data-analytics",
@@ -315,7 +330,8 @@
           "成本",
           "收益"
         ],
-        "integrated_surface_strategy": "用开放式信息层、半透明融合面、风格化图表区和小型指标组组成页面，避免两个大白框贴在背景上。"
+        "integrated_surface_strategy": "用开放式信息层、无容器图表和小型指标组组成页面，避免两个大白框贴在背景上。",
+        "forbidden_large_panel_count": 0
       },
       "raster_layers": [
         "深蓝网格空间背景",
@@ -337,7 +353,11 @@
       "editable_text_contract": "标题、副标题、正文、要点、指标数字、指标标签和图表标签必须作为 PPT 文本对象生成，用户能在 PowerPoint 中直接改。",
       "asset_layer_contract": "背景和装饰只能作为独立 raster/transparent image assets 叠加，不得承载正式正文、关键数字或图表标签。",
       "surface_strategy": "采用融合式版面：文本、指标和图表嵌入背景留白、光带或纸纹/玻璃层中，形成同一视觉系统。",
-      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。"
+      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。",
+      "large_surface_count": {
+        "content_panels": 0,
+        "chart_panels": 0
+      }
     },
     {
       "slug": "oriental-heritage",
@@ -426,7 +446,8 @@
           "转",
           "合"
         ],
-        "integrated_surface_strategy": "用开放式信息层、半透明融合面、风格化图表区和小型指标组组成页面，避免两个大白框贴在背景上。"
+        "integrated_surface_strategy": "用开放式信息层、无容器图表和小型指标组组成页面，避免两个大白框贴在背景上。",
+        "forbidden_large_panel_count": 0
       },
       "raster_layers": [
         "宣纸纹理背景",
@@ -448,7 +469,11 @@
       "editable_text_contract": "标题、副标题、正文、要点、指标数字、指标标签和图表标签必须作为 PPT 文本对象生成，用户能在 PowerPoint 中直接改。",
       "asset_layer_contract": "背景和装饰只能作为独立 raster/transparent image assets 叠加，不得承载正式正文、关键数字或图表标签。",
       "surface_strategy": "采用融合式版面：文本、指标和图表嵌入背景留白、光带或纸纹/玻璃层中，形成同一视觉系统。",
-      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。"
+      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。",
+      "large_surface_count": {
+        "content_panels": 0,
+        "chart_panels": 0
+      }
     },
     {
       "slug": "future-tech",
@@ -537,7 +562,8 @@
           "执行",
           "审计"
         ],
-        "integrated_surface_strategy": "用开放式信息层、半透明融合面、风格化图表区和小型指标组组成页面，避免两个大白框贴在背景上。"
+        "integrated_surface_strategy": "用开放式信息层、无容器图表和小型指标组组成页面，避免两个大白框贴在背景上。",
+        "forbidden_large_panel_count": 0
       },
       "raster_layers": [
         "深色宇宙科技背景",
@@ -559,7 +585,11 @@
       "editable_text_contract": "标题、副标题、正文、要点、指标数字、指标标签和图表标签必须作为 PPT 文本对象生成，用户能在 PowerPoint 中直接改。",
       "asset_layer_contract": "背景和装饰只能作为独立 raster/transparent image assets 叠加，不得承载正式正文、关键数字或图表标签。",
       "surface_strategy": "采用融合式版面：文本、指标和图表嵌入背景留白、光带或纸纹/玻璃层中，形成同一视觉系统。",
-      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。"
+      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。",
+      "large_surface_count": {
+        "content_panels": 0,
+        "chart_panels": 0
+      }
     }
   ]
 }
