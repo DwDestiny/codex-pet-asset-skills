@@ -192,6 +192,8 @@ class visual_ppt_deck_builder_tests(unittest.TestCase):
             self.assertIn("禁止大白框", spec["visual_quality_contract"])
             self.assertEqual(spec["large_surface_policy"]["max_large_content_panels"], 0)
             self.assertEqual(spec["large_surface_policy"]["max_large_chart_panels"], 0)
+            self.assertEqual(spec["large_surface_policy"]["max_framed_metric_tiles"], 0)
+            self.assertIn("背景留白", spec["visual_quality_contract"])
             expected_names = ["简约高级", "活泼动漫", "数据分析", "国潮东方", "未来科技"]
             self.assertEqual([candidate["name"] for candidate in spec["candidates"]], expected_names)
             seen_sample_paths = set()
@@ -218,6 +220,7 @@ class visual_ppt_deck_builder_tests(unittest.TestCase):
                     for metric in candidate["sample_content"]["metrics"]:
                         self.assertIn(metric["value"], slide_xml)
                         self.assertIn(metric["label"], slide_xml)
+                    self.assertNotIn('prst="roundRect"', slide_xml)
                 prompt_path = output_dir / candidate["prompt_file"]
                 self.assertTrue(prompt_path.is_file())
                 prompt_content = prompt_path.read_text(encoding="utf-8")
@@ -243,6 +246,7 @@ class visual_ppt_deck_builder_tests(unittest.TestCase):
                 self.assertIn("large_surface_count", candidate)
                 self.assertEqual(candidate["large_surface_count"]["content_panels"], 0)
                 self.assertEqual(candidate["large_surface_count"]["chart_panels"], 0)
+                self.assertEqual(candidate["large_surface_count"]["framed_metric_tiles"], 0)
                 self.assertIn("sample_slide_spec", candidate)
                 self.assertIn("文本", candidate["editable_text_contract"])
                 self.assertIn("背景", candidate["asset_layer_contract"])
@@ -250,6 +254,7 @@ class visual_ppt_deck_builder_tests(unittest.TestCase):
                 self.assertIn("大白框", candidate["no_plain_white_box_contract"])
                 self.assertIn("integrated_surface_strategy", candidate["sample_slide_spec"])
                 self.assertEqual(candidate["sample_slide_spec"]["forbidden_large_panel_count"], 0)
+                self.assertEqual(candidate["sample_slide_spec"]["forbidden_framed_metric_tile_count"], 0)
             markdown = (output_dir / "style-candidates.md").read_text(encoding="utf-8")
             self.assertIn("PPTX 样板", markdown)
             self.assertIn("PNG 预览", markdown)
@@ -259,6 +264,7 @@ class visual_ppt_deck_builder_tests(unittest.TestCase):
             self.assertIn("禁止大白框", markdown)
             self.assertIn("大面积正文容器：0", markdown)
             self.assertIn("大面积图表容器：0", markdown)
+            self.assertIn("指标描边框：0", markdown)
             self.assertIn("2026 AI 应用趋势调研", markdown)
             for banned_text in ["Topic", "Style", "Assets", "TODO", "TBD", "占位"]:
                 self.assertNotIn(banned_text, markdown)

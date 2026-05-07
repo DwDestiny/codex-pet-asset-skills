@@ -4,11 +4,12 @@
   "delivery_contract": "editable_pptx_samples_with_png_previews",
   "preview_rule": "PNG 预览必须由对应 PPTX 样板渲染导出，不能直接使用整页生图作为候选。",
   "ppt_contract": "PPTX 样板中的标题、正文、指标、图表标签和关键注释必须可编辑；图片只承担背景、透明素材和装饰层。",
-  "visual_quality_contract": "候选必须达到融合式版面：背景、文本、指标和图表属于同一视觉系统；禁止大白框贴背景，避免两个大面积纯白矩形分别承载正文和图表。",
+  "visual_quality_contract": "候选必须达到融合式版面：背景、文本、指标和图表属于同一视觉系统；文字和图表要嵌入背景留白，禁止大白框、内容容器框和指标描边框。",
   "large_surface_policy": {
     "max_large_content_panels": 0,
     "max_large_chart_panels": 0,
-    "allowed_small_metric_tiles": true
+    "max_framed_metric_tiles": 0,
+    "allowed_open_metric_groups": true
   },
   "candidates": [
     {
@@ -22,7 +23,7 @@
         "assets/transparent-minimal-premium-accent-02.png"
       ],
       "prompt_file": "prompts/background-minimal-premium.md",
-      "image_generation_prompt": "Codex image generation prompt for 简约高级.\n\nCreate a 16:9 PowerPoint background image only for a deck about: 2026 AI 应用趋势调研.\nVisual direction: premium minimalist business consulting PowerPoint background, elegant grayscale, architectural glass building details, abundant white space, thin black lines, refined corporate presentation mood.\nNo readable text, no letters, no numbers, no fake UI labels, no chart labels, no titles, no subtitles.\nLeave clean areas where editable PPT title, body copy, metric cards, and chart labels can be placed later.\nThis background image is only one raster asset layer. The final candidate preview must be produced by placing editable PPT text, shapes, charts, and labels above it.\nPalette reference: #050505, #4A4A4A, #A7A7A7, #E1E1E1, #FFFFFF.\nSuggested transparent assets to generate separately later: 黑白线框图标组, 半透明建筑结构装饰, 咨询卡片角标.",
+      "image_generation_prompt": "Codex image generation prompt for 简约高级.\n\nCreate a 16:9 PowerPoint background image only for a deck about: 2026 AI 应用趋势调研.\nVisual direction: premium minimalist business consulting PowerPoint background, elegant grayscale, architectural glass building details, abundant white space, thin black lines, refined corporate presentation mood.\nNo readable text, no letters, no numbers, no fake UI labels, no chart labels, no titles, no subtitles.\nLeave clean whitespace where editable PPT title, body copy, open metric numbers, and chart labels can be placed later without any card frames.\nThis background image is only one raster asset layer. The final candidate preview must be produced by placing editable PPT text, shapes, charts, and labels above it.\nPalette reference: #050505, #4A4A4A, #A7A7A7, #E1E1E1, #FFFFFF.\nSuggested transparent assets to generate separately later: 黑白线框图标组, 半透明建筑结构装饰, 咨询卡片角标.",
       "palette": [
         "#050505",
         "#4A4A4A",
@@ -98,8 +99,9 @@
           "数据",
           "组织"
         ],
-        "integrated_surface_strategy": "用开放式信息层、无容器图表和小型指标组组成页面，避免两个大白框贴在背景上。",
-        "forbidden_large_panel_count": 0
+        "integrated_surface_strategy": "用背景留白、开放式信息层、无容器图表和无描边指标数字组组成页面，避免把内容装进框里。",
+        "forbidden_large_panel_count": 0,
+        "forbidden_framed_metric_tile_count": 0
       },
       "raster_layers": [
         "浅灰建筑摄影感背景",
@@ -121,10 +123,11 @@
       "editable_text_contract": "标题、副标题、正文、要点、指标数字、指标标签和图表标签必须作为 PPT 文本对象生成，用户能在 PowerPoint 中直接改。",
       "asset_layer_contract": "背景和装饰只能作为独立 raster/transparent image assets 叠加，不得承载正式正文、关键数字或图表标签。",
       "surface_strategy": "采用融合式版面：文本、指标和图表嵌入背景留白、光带或纸纹/玻璃层中，形成同一视觉系统。",
-      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。",
+      "no_plain_white_box_contract": "禁止大白框和容器框：不得用大面积矩形或指标描边框承载正文、指标和图表，浅色区域也必须依靠背景留白、纹理、细线和开放式布局。",
       "large_surface_count": {
         "content_panels": 0,
-        "chart_panels": 0
+        "chart_panels": 0,
+        "framed_metric_tiles": 0
       }
     },
     {
@@ -138,7 +141,7 @@
         "assets/transparent-playful-anime-accent-02.png"
       ],
       "prompt_file": "prompts/background-playful-anime.md",
-      "image_generation_prompt": "Codex image generation prompt for 活泼动漫.\n\nCreate a 16:9 PowerPoint background image only for a deck about: 2026 AI 应用趋势调研.\nVisual direction: playful anime education PowerPoint background, cheerful classroom, soft clouds, rounded colorful visual areas, bright yellow pink blue palette, polished illustration quality.\nNo readable text, no letters, no numbers, no fake UI labels, no chart labels, no titles, no subtitles.\nLeave clean areas where editable PPT title, body copy, metric cards, and chart labels can be placed later.\nThis background image is only one raster asset layer. The final candidate preview must be produced by placing editable PPT text, shapes, charts, and labels above it.\nPalette reference: #FFC93C, #FF9EB5, #7BDDC8, #8FD3FF, #B9B2F8.\nSuggested transparent assets to generate separately later: 可爱学生角色, 课程徽章贴纸, 星星和学习道具装饰.",
+      "image_generation_prompt": "Codex image generation prompt for 活泼动漫.\n\nCreate a 16:9 PowerPoint background image only for a deck about: 2026 AI 应用趋势调研.\nVisual direction: playful anime education PowerPoint background, cheerful classroom, soft clouds, rounded colorful visual areas, bright yellow pink blue palette, polished illustration quality.\nNo readable text, no letters, no numbers, no fake UI labels, no chart labels, no titles, no subtitles.\nLeave clean whitespace where editable PPT title, body copy, open metric numbers, and chart labels can be placed later without any card frames.\nThis background image is only one raster asset layer. The final candidate preview must be produced by placing editable PPT text, shapes, charts, and labels above it.\nPalette reference: #FFC93C, #FF9EB5, #7BDDC8, #8FD3FF, #B9B2F8.\nSuggested transparent assets to generate separately later: 可爱学生角色, 课程徽章贴纸, 星星和学习道具装饰.",
       "palette": [
         "#FFC93C",
         "#FF9EB5",
@@ -214,8 +217,9 @@
           "练习",
           "复盘"
         ],
-        "integrated_surface_strategy": "用开放式信息层、无容器图表和小型指标组组成页面，避免两个大白框贴在背景上。",
-        "forbidden_large_panel_count": 0
+        "integrated_surface_strategy": "用背景留白、开放式信息层、无容器图表和无描边指标数字组组成页面，避免把内容装进框里。",
+        "forbidden_large_panel_count": 0,
+        "forbidden_framed_metric_tile_count": 0
       },
       "raster_layers": [
         "明亮教室场景背景",
@@ -237,10 +241,11 @@
       "editable_text_contract": "标题、副标题、正文、要点、指标数字、指标标签和图表标签必须作为 PPT 文本对象生成，用户能在 PowerPoint 中直接改。",
       "asset_layer_contract": "背景和装饰只能作为独立 raster/transparent image assets 叠加，不得承载正式正文、关键数字或图表标签。",
       "surface_strategy": "采用融合式版面：文本、指标和图表嵌入背景留白、光带或纸纹/玻璃层中，形成同一视觉系统。",
-      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。",
+      "no_plain_white_box_contract": "禁止大白框和容器框：不得用大面积矩形或指标描边框承载正文、指标和图表，浅色区域也必须依靠背景留白、纹理、细线和开放式布局。",
       "large_surface_count": {
         "content_panels": 0,
-        "chart_panels": 0
+        "chart_panels": 0,
+        "framed_metric_tiles": 0
       }
     },
     {
@@ -254,7 +259,7 @@
         "assets/transparent-data-analytics-accent-02.png"
       ],
       "prompt_file": "prompts/background-data-analytics.md",
-      "image_generation_prompt": "Codex image generation prompt for 数据分析.\n\nCreate a 16:9 PowerPoint background image only for a deck about: 2026 AI 应用趋势调研.\nVisual direction: data analytics PowerPoint background, dark navy dashboard atmosphere, luminous blue abstract charts without labels, premium enterprise report mood, subtle grid.\nNo readable text, no letters, no numbers, no fake UI labels, no chart labels, no titles, no subtitles.\nLeave clean areas where editable PPT title, body copy, metric cards, and chart labels can be placed later.\nThis background image is only one raster asset layer. The final candidate preview must be produced by placing editable PPT text, shapes, charts, and labels above it.\nPalette reference: #020B1D, #061C3A, #0B4F86, #5B5FF0, #12C7D6.\nSuggested transparent assets to generate separately later: 发光图表装饰, KPI 卡片边框, 数据节点和连线元素.",
+      "image_generation_prompt": "Codex image generation prompt for 数据分析.\n\nCreate a 16:9 PowerPoint background image only for a deck about: 2026 AI 应用趋势调研.\nVisual direction: data analytics PowerPoint background, dark navy dashboard atmosphere, luminous blue abstract charts without labels, premium enterprise report mood, subtle grid.\nNo readable text, no letters, no numbers, no fake UI labels, no chart labels, no titles, no subtitles.\nLeave clean whitespace where editable PPT title, body copy, open metric numbers, and chart labels can be placed later without any card frames.\nThis background image is only one raster asset layer. The final candidate preview must be produced by placing editable PPT text, shapes, charts, and labels above it.\nPalette reference: #020B1D, #061C3A, #0B4F86, #5B5FF0, #12C7D6.\nSuggested transparent assets to generate separately later: 发光图表装饰, KPI 卡片边框, 数据节点和连线元素.",
       "palette": [
         "#020B1D",
         "#061C3A",
@@ -330,8 +335,9 @@
           "成本",
           "收益"
         ],
-        "integrated_surface_strategy": "用开放式信息层、无容器图表和小型指标组组成页面，避免两个大白框贴在背景上。",
-        "forbidden_large_panel_count": 0
+        "integrated_surface_strategy": "用背景留白、开放式信息层、无容器图表和无描边指标数字组组成页面，避免把内容装进框里。",
+        "forbidden_large_panel_count": 0,
+        "forbidden_framed_metric_tile_count": 0
       },
       "raster_layers": [
         "深蓝网格空间背景",
@@ -353,10 +359,11 @@
       "editable_text_contract": "标题、副标题、正文、要点、指标数字、指标标签和图表标签必须作为 PPT 文本对象生成，用户能在 PowerPoint 中直接改。",
       "asset_layer_contract": "背景和装饰只能作为独立 raster/transparent image assets 叠加，不得承载正式正文、关键数字或图表标签。",
       "surface_strategy": "采用融合式版面：文本、指标和图表嵌入背景留白、光带或纸纹/玻璃层中，形成同一视觉系统。",
-      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。",
+      "no_plain_white_box_contract": "禁止大白框和容器框：不得用大面积矩形或指标描边框承载正文、指标和图表，浅色区域也必须依靠背景留白、纹理、细线和开放式布局。",
       "large_surface_count": {
         "content_panels": 0,
-        "chart_panels": 0
+        "chart_panels": 0,
+        "framed_metric_tiles": 0
       }
     },
     {
@@ -370,7 +377,7 @@
         "assets/transparent-oriental-heritage-accent-02.png"
       ],
       "prompt_file": "prompts/background-oriental-heritage.md",
-      "image_generation_prompt": "Codex image generation prompt for 国潮东方.\n\nCreate a 16:9 PowerPoint background image only for a deck about: 2026 AI 应用趋势调研.\nVisual direction: oriental heritage PowerPoint background, premium Chinese ink landscape, rice paper texture, vermilion accent, elegant modern brand presentation, calm cultural luxury, no text.\nNo readable text, no letters, no numbers, no fake UI labels, no chart labels, no titles, no subtitles.\nLeave clean areas where editable PPT title, body copy, metric cards, and chart labels can be placed later.\nThis background image is only one raster asset layer. The final candidate preview must be produced by placing editable PPT text, shapes, charts, and labels above it.\nPalette reference: #B91C1C, #171717, #E8DCC7, #F3EADB, #FAF8F2.\nSuggested transparent assets to generate separately later: 水墨山石装饰, 朱红印章元素, 梅枝或器物剪影.",
+      "image_generation_prompt": "Codex image generation prompt for 国潮东方.\n\nCreate a 16:9 PowerPoint background image only for a deck about: 2026 AI 应用趋势调研.\nVisual direction: oriental heritage PowerPoint background, premium Chinese ink landscape, rice paper texture, vermilion accent, elegant modern brand presentation, calm cultural luxury, no text.\nNo readable text, no letters, no numbers, no fake UI labels, no chart labels, no titles, no subtitles.\nLeave clean whitespace where editable PPT title, body copy, open metric numbers, and chart labels can be placed later without any card frames.\nThis background image is only one raster asset layer. The final candidate preview must be produced by placing editable PPT text, shapes, charts, and labels above it.\nPalette reference: #B91C1C, #171717, #E8DCC7, #F3EADB, #FAF8F2.\nSuggested transparent assets to generate separately later: 水墨山石装饰, 朱红印章元素, 梅枝或器物剪影.",
       "palette": [
         "#B91C1C",
         "#171717",
@@ -446,8 +453,9 @@
           "转",
           "合"
         ],
-        "integrated_surface_strategy": "用开放式信息层、无容器图表和小型指标组组成页面，避免两个大白框贴在背景上。",
-        "forbidden_large_panel_count": 0
+        "integrated_surface_strategy": "用背景留白、开放式信息层、无容器图表和无描边指标数字组组成页面，避免把内容装进框里。",
+        "forbidden_large_panel_count": 0,
+        "forbidden_framed_metric_tile_count": 0
       },
       "raster_layers": [
         "宣纸纹理背景",
@@ -469,10 +477,11 @@
       "editable_text_contract": "标题、副标题、正文、要点、指标数字、指标标签和图表标签必须作为 PPT 文本对象生成，用户能在 PowerPoint 中直接改。",
       "asset_layer_contract": "背景和装饰只能作为独立 raster/transparent image assets 叠加，不得承载正式正文、关键数字或图表标签。",
       "surface_strategy": "采用融合式版面：文本、指标和图表嵌入背景留白、光带或纸纹/玻璃层中，形成同一视觉系统。",
-      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。",
+      "no_plain_white_box_contract": "禁止大白框和容器框：不得用大面积矩形或指标描边框承载正文、指标和图表，浅色区域也必须依靠背景留白、纹理、细线和开放式布局。",
       "large_surface_count": {
         "content_panels": 0,
-        "chart_panels": 0
+        "chart_panels": 0,
+        "framed_metric_tiles": 0
       }
     },
     {
@@ -486,7 +495,7 @@
         "assets/transparent-future-tech-accent-02.png"
       ],
       "prompt_file": "prompts/background-future-tech.md",
-      "image_generation_prompt": "Codex image generation prompt for 未来科技.\n\nCreate a 16:9 PowerPoint background image only for a deck about: 2026 AI 应用趋势调研.\nVisual direction: future technology PowerPoint background, dark cinematic AI product launch, cyan neon glow, holographic chip platform, glassmorphism atmosphere, premium tech conference mood, no text.\nNo readable text, no letters, no numbers, no fake UI labels, no chart labels, no titles, no subtitles.\nLeave clean areas where editable PPT title, body copy, metric cards, and chart labels can be placed later.\nThis background image is only one raster asset layer. The final candidate preview must be produced by placing editable PPT text, shapes, charts, and labels above it.\nPalette reference: #0097A7, #00D4D8, #2F80ED, #7C4DFF, #03122B.\nSuggested transparent assets to generate separately later: 玻璃拟态产品卡片, 芯片和光效装饰, 科技图标组.",
+      "image_generation_prompt": "Codex image generation prompt for 未来科技.\n\nCreate a 16:9 PowerPoint background image only for a deck about: 2026 AI 应用趋势调研.\nVisual direction: future technology PowerPoint background, dark cinematic AI product launch, cyan neon glow, holographic chip platform, glassmorphism atmosphere, premium tech conference mood, no text.\nNo readable text, no letters, no numbers, no fake UI labels, no chart labels, no titles, no subtitles.\nLeave clean whitespace where editable PPT title, body copy, open metric numbers, and chart labels can be placed later without any card frames.\nThis background image is only one raster asset layer. The final candidate preview must be produced by placing editable PPT text, shapes, charts, and labels above it.\nPalette reference: #0097A7, #00D4D8, #2F80ED, #7C4DFF, #03122B.\nSuggested transparent assets to generate separately later: 玻璃拟态产品卡片, 芯片和光效装饰, 科技图标组.",
       "palette": [
         "#0097A7",
         "#00D4D8",
@@ -562,8 +571,9 @@
           "执行",
           "审计"
         ],
-        "integrated_surface_strategy": "用开放式信息层、无容器图表和小型指标组组成页面，避免两个大白框贴在背景上。",
-        "forbidden_large_panel_count": 0
+        "integrated_surface_strategy": "用背景留白、开放式信息层、无容器图表和无描边指标数字组组成页面，避免把内容装进框里。",
+        "forbidden_large_panel_count": 0,
+        "forbidden_framed_metric_tile_count": 0
       },
       "raster_layers": [
         "深色宇宙科技背景",
@@ -585,10 +595,11 @@
       "editable_text_contract": "标题、副标题、正文、要点、指标数字、指标标签和图表标签必须作为 PPT 文本对象生成，用户能在 PowerPoint 中直接改。",
       "asset_layer_contract": "背景和装饰只能作为独立 raster/transparent image assets 叠加，不得承载正式正文、关键数字或图表标签。",
       "surface_strategy": "采用融合式版面：文本、指标和图表嵌入背景留白、光带或纸纹/玻璃层中，形成同一视觉系统。",
-      "no_plain_white_box_contract": "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。",
+      "no_plain_white_box_contract": "禁止大白框和容器框：不得用大面积矩形或指标描边框承载正文、指标和图表，浅色区域也必须依靠背景留白、纹理、细线和开放式布局。",
       "large_surface_count": {
         "content_panels": 0,
-        "chart_panels": 0
+        "chart_panels": 0,
+        "framed_metric_tiles": 0
       }
     }
   ]

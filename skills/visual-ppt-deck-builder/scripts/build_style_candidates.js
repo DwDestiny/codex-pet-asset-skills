@@ -135,83 +135,35 @@ function add_text(slide, value, options) {
   });
 }
 
-function add_panel(slide, options) {
-  slide.addShape("roundRect", {
-    x: options.x,
-    y: options.y,
-    w: options.w,
-    h: options.h,
-    rectRadius: options.radius || 0.08,
-    fill: { color: strip_hash(options.fill || "FFFFFF"), transparency: options.transparency || 0 },
-    line: { color: strip_hash(options.line || options.fill || "FFFFFF"), transparency: options.line_transparency || 0 },
-  });
-}
-
-function add_metric_card(slide, metric, index, theme, x, y, w, h) {
-  add_panel(slide, {
+function add_open_metric_stat(slide, metric, index, theme, x, y, w, options = {}) {
+  const accent = options.accent || (index % 2 === 0 ? theme.accent : theme.accent_2);
+  const value_size = options.value_size || 20;
+  slide.addShape("line", {
     x,
     y,
-    w,
-    h,
-    fill: theme.card_fill,
-    line: index % 2 === 0 ? theme.accent : theme.accent_2,
-    transparency: theme.card_transparency || 0,
-    line_transparency: 10,
+    w: options.line_width || 0.58,
+    h: 0,
+    line: { color: strip_hash(accent), transparency: options.line_transparency == null ? 10 : options.line_transparency, width: 2 },
   });
   add_text(slide, metric.value, {
-    x: x + 0.18,
-    y: y + 0.18,
-    w: w - 0.36,
-    h: 0.32,
-    font_face: theme.font_face,
-    font_size: 21,
-    bold: true,
-    color: index % 2 === 0 ? theme.accent : theme.accent_2,
-  });
-  add_text(slide, metric.label, {
-    x: x + 0.18,
-    y: y + 0.56,
-    w: w - 0.36,
-    h: 0.28,
-    font_face: theme.font_face,
-    font_size: 9.5,
-    bold: true,
-    color: theme.foreground,
-  });
-}
-
-function add_metric_tile(slide, metric, index, theme, x, y, w, h, options = {}) {
-  const fill = options.fill || theme.metric_fill || theme.card_fill;
-  const line = options.line || (index % 2 === 0 ? theme.accent : theme.accent_2);
-  add_panel(slide, {
     x,
-    y,
+    y: y + 0.14,
     w,
-    h,
-    fill,
-    line,
-    transparency: options.transparency == null ? theme.metric_transparency || 0 : options.transparency,
-    line_transparency: options.line_transparency == null ? 18 : options.line_transparency,
-  });
-  add_text(slide, metric.value, {
-    x: x + 0.14,
-    y: y + 0.1,
-    w: w - 0.28,
-    h: h * 0.46,
+    h: 0.36,
     font_face: theme.font_face,
-    font_size: options.value_size || 18,
+    font_size: value_size,
     bold: true,
-    color: index % 2 === 0 ? theme.accent : theme.accent_2,
+    color: accent,
   });
   add_text(slide, metric.label, {
-    x: x + 0.14,
-    y: y + h * 0.58,
-    w: w - 0.28,
-    h: h * 0.26,
+    x,
+    y: y + 0.54,
+    w,
+    h: 0.25,
     font_face: theme.font_face,
-    font_size: options.label_size || 7.6,
+    font_size: options.label_size || 7.8,
     bold: true,
-    color: theme.foreground,
+    color: options.label_color || theme.foreground,
   });
 }
 
@@ -432,7 +384,7 @@ function build_background_prompt(candidate, topic) {
     `Create a 16:9 PowerPoint background image only for a deck about: ${topic}.`,
     `Visual direction: ${candidate.prompt_seed}.`,
     "No readable text, no letters, no numbers, no fake UI labels, no chart labels, no titles, no subtitles.",
-    "Leave clean areas where editable PPT title, body copy, metric cards, and chart labels can be placed later.",
+    "Leave clean whitespace where editable PPT title, body copy, open metric numbers, and chart labels can be placed later without any card frames.",
     "This background image is only one raster asset layer. The final candidate preview must be produced by placing editable PPT text, shapes, charts, and labels above it.",
     `Palette reference: ${candidate.palette.join(", ")}.`,
     `Suggested transparent assets to generate separately later: ${candidate.transparent_assets.join(", ")}.`,
@@ -450,8 +402,9 @@ function build_sample_slide_spec(candidate, content) {
     metrics: content.metrics,
     chart_labels: content.chart_labels,
     integrated_surface_strategy:
-      "用开放式信息层、无容器图表和小型指标组组成页面，避免两个大白框贴在背景上。",
+      "用背景留白、开放式信息层、无容器图表和无描边指标数字组组成页面，避免把内容装进框里。",
     forbidden_large_panel_count: 0,
+    forbidden_framed_metric_tile_count: 0,
   };
 }
 
@@ -485,10 +438,11 @@ function build_candidate(candidate_template, topic) {
     surface_strategy:
       "采用融合式版面：文本、指标和图表嵌入背景留白、光带或纸纹/玻璃层中，形成同一视觉系统。",
     no_plain_white_box_contract:
-      "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。",
+      "禁止大白框和容器框：不得用大面积矩形或指标描边框承载正文、指标和图表，浅色区域也必须依靠背景留白、纹理、细线和开放式布局。",
     large_surface_count: {
       content_panels: 0,
       chart_panels: 0,
+      framed_metric_tiles: 0,
     },
   };
 }
@@ -557,7 +511,7 @@ function add_sample_layout(slide, candidate, output_dir) {
   const bullet_width = is_playful ? 3.42 : is_oriental ? 3.2 : 3.8;
   const metric_start_x = is_playful ? 2.86 : is_oriental ? 2.34 : 0.78;
   const metric_gap = is_playful ? 1.78 : 1.84;
-  const metric_y = is_oriental ? 5.08 : 5.18;
+  const metric_y = is_oriental ? 5.12 : 5.18;
   const chart_x = is_oriental ? 7.55 : 7.35;
   const chart_y = is_playful ? 2.15 : 2.08;
   const chart_width = is_playful ? 3.95 : 4.08;
@@ -594,12 +548,11 @@ function add_sample_layout(slide, candidate, output_dir) {
   });
   add_bullet_list(slide, content.bullets, theme, section_x + 0.02, section_y + 1.4, { w: bullet_width, font_size: 8.3, step: 0.32 });
   content.metrics.forEach((metric, index) => {
-    add_metric_tile(slide, metric, index, theme, metric_start_x + index * metric_gap, metric_y, 1.48, 0.68, {
-      transparency: is_dark ? 30 : is_playful ? 38 : is_oriental ? 24 : 34,
-      line_transparency: is_playful ? 42 : 36,
-      fill: is_oriental ? (index === 1 ? "FAF8F2" : "F3EADB") : undefined,
-      line: is_oriental && index === 1 ? "171717" : undefined,
+    add_open_metric_stat(slide, metric, index, theme, metric_start_x + index * metric_gap, metric_y, 1.34, {
+      accent: is_oriental && index === 1 ? "171717" : undefined,
+      line_transparency: is_playful ? 12 : 22,
       value_size: 18,
+      label_color: is_dark ? "FFFFFF" : theme.foreground,
     });
   });
   add_text(slide, "趋势指数", {
@@ -710,6 +663,7 @@ function write_markdown(output_dir, topic, candidates) {
     lines.push(`- 白框约束：${candidate.no_plain_white_box_contract}`);
     lines.push(`- 大面积正文容器：${candidate.large_surface_count.content_panels}`);
     lines.push(`- 大面积图表容器：${candidate.large_surface_count.chart_panels}`);
+    lines.push(`- 指标描边框：${candidate.large_surface_count.framed_metric_tiles}`);
     lines.push("");
   }
   fs.writeFileSync(path.join(output_dir, "style-candidates.md"), `${lines.join("\n")}\n`, "utf8");
@@ -724,11 +678,12 @@ function write_spec(output_dir, topic, candidates) {
     ppt_contract:
       "PPTX 样板中的标题、正文、指标、图表标签和关键注释必须可编辑；图片只承担背景、透明素材和装饰层。",
     visual_quality_contract:
-      "候选必须达到融合式版面：背景、文本、指标和图表属于同一视觉系统；禁止大白框贴背景，避免两个大面积纯白矩形分别承载正文和图表。",
+      "候选必须达到融合式版面：背景、文本、指标和图表属于同一视觉系统；文字和图表要嵌入背景留白，禁止大白框、内容容器框和指标描边框。",
     large_surface_policy: {
       max_large_content_panels: 0,
       max_large_chart_panels: 0,
-      allowed_small_metric_tiles: true,
+      max_framed_metric_tiles: 0,
+      allowed_open_metric_groups: true,
     },
     candidates,
   };
