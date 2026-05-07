@@ -183,7 +183,7 @@ class visual_ppt_deck_builder_tests(unittest.TestCase):
             spec_path = output_dir / "style-candidate-spec.json"
             self.assertTrue(spec_path.is_file())
             spec = json.loads(spec_path.read_text(encoding="utf-8"))
-            self.assertEqual(spec["candidate_count"], 5)
+            self.assertEqual(spec["candidate_count"], 8)
             self.assertEqual(spec["delivery_contract"], "editable_pptx_samples_with_png_previews")
             self.assertEqual(spec["topic"], topic)
             self.assertIn("PPTX 样板", spec["preview_rule"])
@@ -208,7 +208,16 @@ class visual_ppt_deck_builder_tests(unittest.TestCase):
             self.assertEqual(spec["style_reference_policy"]["clean_background_after_reference"], True)
             self.assertEqual(spec["style_reference_policy"]["editable_reconstruction_required"], True)
             self.assertIn("先直出完整效果图", spec["style_reference_policy"]["workflow_rule"])
-            expected_names = ["简约高级", "活泼动漫", "数据分析", "国潮东方", "未来科技"]
+            expected_names = [
+                "简约高级",
+                "活泼动漫",
+                "数据分析",
+                "国潮东方",
+                "未来科技",
+                "编辑杂志",
+                "SaaS 产品",
+                "投资人叙事",
+            ]
             self.assertEqual([candidate["name"] for candidate in spec["candidates"]], expected_names)
             seen_sample_paths = set()
             for candidate in spec["candidates"]:

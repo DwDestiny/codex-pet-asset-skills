@@ -78,6 +78,42 @@ const candidate_templates = [
     prompt_seed:
       "future technology PowerPoint background, dark cinematic AI product launch, cyan neon glow, holographic chip platform, glassmorphism atmosphere, premium tech conference mood, no text",
   },
+  {
+    slug: "editorial-magazine",
+    name: "编辑杂志",
+    palette: ["#111827", "#D72638", "#F3EEE8", "#C7B299", "#FFFFFF"],
+    best_for: ["品牌故事", "公开演讲", "趋势洞察"],
+    visual_direction: "杂志封面级标题、非对称大图留白、克制红色强调和强编辑感排版，适合观点型表达。",
+    raster_layers: ["大幅摄影/插画留白背景", "轻纸张颗粒", "编辑式页眉页脚节奏"],
+    transparent_assets: ["红色编辑标记", "裁切图片角标", "细线章节编号"],
+    editable_layers: ["杂志式主标题", "导语正文", "章节编号", "引用文字", "图表注释"],
+    prompt_seed:
+      "editorial magazine PowerPoint background, premium trend report layout, asymmetric whitespace, subtle paper grain, restrained red accent, cinematic photo area, high-end magazine typography mood, no text",
+  },
+  {
+    slug: "saas-product",
+    name: "SaaS 产品",
+    palette: ["#0F172A", "#2563EB", "#22C55E", "#E0F2FE", "#F8FAFC"],
+    best_for: ["产品发布", "SaaS 销售", "功能路线图"],
+    visual_direction: "干净产品界面感、柔和蓝绿光、模块化信息但不套大框，适合产品价值和功能流程叙事。",
+    raster_layers: ["浅色产品工作台背景", "柔和蓝绿渐变光", "抽象界面透视氛围"],
+    transparent_assets: ["产品界面浮层", "功能图标组", "流程节点装饰"],
+    editable_layers: ["产品标题", "功能卖点", "路线节点", "指标标签", "流程说明"],
+    prompt_seed:
+      "modern SaaS product launch PowerPoint background, clean workspace, soft blue green gradient, abstract app interface panels as decorative edge elements only, premium product marketing presentation, no text",
+  },
+  {
+    slug: "investor-narrative",
+    name: "投资人叙事",
+    palette: ["#08111F", "#F6C85F", "#E6EEF8", "#42526E", "#FFFFFF"],
+    best_for: ["融资路演", "商业计划", "增长故事"],
+    visual_direction: "深色高信任感、金色增长线、市场叙事和关键指标优先，适合投资人 pitch 和商业计划。",
+    raster_layers: ["深色金融空间背景", "金色增长曲线氛围", "低纹理市场地图或网格"],
+    transparent_assets: ["增长箭头光线", "市场地图点位", "投资人指标图标"],
+    editable_layers: ["融资主张", "市场规模数字", "增长图表", "商业模式标签", "里程碑"],
+    prompt_seed:
+      "investor pitch deck PowerPoint background, dark premium financial narrative, subtle market map grid, warm gold growth line atmosphere, high trust boardroom mood, no text",
+  },
 ];
 
 function parse_args(argv) {
@@ -108,7 +144,7 @@ function usage() {
     "  node build_style_candidates.js --output-dir /absolute/path/style-candidates --topic \"deck topic\"",
     "  node build_style_candidates.js --output-dir /absolute/path/style-candidates --topic \"deck topic\" --background-source-dir /absolute/path/backgrounds",
     "",
-    "Writes five editable one-slide PPTX samples, five PNG previews exported from those PPTX files,",
+    "Writes eight editable one-slide PPTX samples, eight PNG previews exported from those PPTX files,",
     "style-reference prompts, clean-background prompts, and a style-candidate-spec.json contract.",
   ].join("\n");
 }
@@ -280,7 +316,7 @@ function add_background(slide, candidate, theme, output_dir) {
 
 function theme_for(candidate) {
   const palette = candidate.palette.map(strip_hash);
-  const dark_slugs = new Set(["data-analytics", "future-tech"]);
+  const dark_slugs = new Set(["data-analytics", "future-tech", "investor-narrative"]);
   const is_dark = dark_slugs.has(candidate.slug);
   if (candidate.slug === "playful-anime") {
     return {
@@ -308,6 +344,36 @@ function theme_for(candidate) {
       metric_fill: "08213C",
       metric_transparency: 10,
       axis: "2E6F9E",
+      font_face: "PingFang SC",
+    };
+  }
+  if (candidate.slug === "future-tech") {
+    return {
+      background: "03122B",
+      foreground: "FFFFFF",
+      muted: "A7C3D9",
+      accent: "00D4D8",
+      accent_2: "7C4DFF",
+      card_fill: "071B34",
+      card_transparency: 8,
+      metric_fill: "071B34",
+      metric_transparency: 10,
+      axis: "315D82",
+      font_face: "PingFang SC",
+    };
+  }
+  if (candidate.slug === "saas-product") {
+    return {
+      background: "F8FAFC",
+      foreground: "0F172A",
+      muted: "64748B",
+      accent: "2563EB",
+      accent_2: "22C55E",
+      card_fill: "FFFFFF",
+      card_transparency: 14,
+      metric_fill: "E0F2FE",
+      metric_transparency: 18,
+      axis: "93C5FD",
       font_face: "PingFang SC",
     };
   }
@@ -387,6 +453,42 @@ function build_sample_content(topic, candidate) {
         { value: "0漏审", label: "可信审计目标" },
       ],
       chart_labels: ["输入", "推理", "执行", "审计"],
+    },
+    "editorial-magazine": {
+      subtitle: "趋势洞察报告样张",
+      section_title: "核心观点",
+      body: "AI 应用的下一阶段不是工具清单竞争，而是组织是否能把判断、素材和流程沉淀成可复用能力。",
+      bullets: ["观点先行", "案例支撑", "节奏留白"],
+      metrics: [
+        { value: "01", label: "主叙事" },
+        { value: "5页", label: "章节节奏" },
+        { value: "3层", label: "证据结构" },
+      ],
+      chart_labels: ["观点", "案例", "数据", "行动"],
+    },
+    "saas-product": {
+      subtitle: "产品增长方案样张",
+      section_title: "产品价值",
+      body: "SaaS 型 AI 产品要把能力说成用户可感知的流程收益，而不是堆模型参数和功能清单。",
+      bullets: ["缩短上手路径", "提高协作效率", "沉淀复用资产"],
+      metrics: [
+        { value: "42%", label: "激活提升" },
+        { value: "7天", label: "上手周期" },
+        { value: "3x", label: "功能复用" },
+      ],
+      chart_labels: ["访问", "激活", "留存", "扩展"],
+    },
+    "investor-narrative": {
+      subtitle: "融资路演样张",
+      section_title: "增长逻辑",
+      body: "投资人需要看到的不只是市场热度，而是需求强度、增长路径、商业模式和团队执行节奏。",
+      bullets: ["市场窗口明确", "增长路径可验证", "商业化节奏清晰"],
+      metrics: [
+        { value: "$1.2B", label: "目标市场" },
+        { value: "18月", label: "扩张窗口" },
+        { value: "4x", label: "收入杠杆" },
+      ],
+      chart_labels: ["需求", "产品", "收入", "规模"],
     },
   };
   const detail = style_details[candidate.slug];
@@ -658,6 +760,156 @@ function build_coordinate_blueprint(candidate) {
         capacity: "保持干净，不放强光。",
       },
     },
+    "editorial-magazine": {
+      title_zone: {
+        x: 0.74,
+        y: 0.78,
+        w: 5.85,
+        h: 1.35,
+        role: "杂志式主标题和导语，背景只保留轻纸纹。",
+        capacity: "主标题 1-2 行，副标题 1 行。",
+      },
+      text_zone: {
+        x: 0.86,
+        y: 2.55,
+        w: 4.85,
+        h: 2.05,
+        role: "观点导语和三条证据，低纹理编辑留白。",
+        capacity: "正文 60 个中文字符以内，3 条短要点。",
+      },
+      chart_zone: {
+        x: 7.25,
+        y: 1.62,
+        w: 4.7,
+        h: 4.55,
+        role: "开放式趋势图，红色只做关键转折强调。",
+        capacity: "4 组柱状图或观点证据轴。",
+      },
+      metrics_zone: {
+        x: 0.9,
+        y: 5.42,
+        w: 5.45,
+        h: 0.95,
+        role: "编辑式大编号和指标，不加卡片。",
+        capacity: "3 个大数字，每个 1 个短标签。",
+      },
+      visual_focus_zone: {
+        x: 8.25,
+        y: 0.15,
+        w: 4.7,
+        h: 7.1,
+        role: "大图留白、裁切边缘和轻颗粒主视觉。",
+        capacity: "可承接图片但不承载正文。",
+      },
+      protected_empty_zone: {
+        x: 5.85,
+        y: 0.75,
+        w: 1.05,
+        h: 6.15,
+        role: "左右非对称版面的呼吸带。",
+        capacity: "保持干净。",
+      },
+    },
+    "saas-product": {
+      title_zone: {
+        x: 0.72,
+        y: 0.76,
+        w: 5.7,
+        h: 1.12,
+        role: "产品价值标题和副标题，浅色产品背景净空。",
+        capacity: "主标题 1 行，副标题 1 行。",
+      },
+      text_zone: {
+        x: 0.84,
+        y: 2.32,
+        w: 4.95,
+        h: 2.25,
+        role: "功能价值和流程说明，背景为浅蓝低噪声留白。",
+        capacity: "正文 55 个中文字符以内，3 条短要点。",
+      },
+      chart_zone: {
+        x: 7.1,
+        y: 1.55,
+        w: 4.75,
+        h: 4.7,
+        role: "增长漏斗或采用趋势图，避免像后台 UI 卡片。",
+        capacity: "4 组增长数据和标签。",
+      },
+      metrics_zone: {
+        x: 0.84,
+        y: 5.45,
+        w: 5.6,
+        h: 0.95,
+        role: "开放式产品指标，不做卡片。",
+        capacity: "3 个大数字，每个 1 个短标签。",
+      },
+      visual_focus_zone: {
+        x: 7.15,
+        y: 0.5,
+        w: 5.65,
+        h: 6.2,
+        role: "产品界面透视、流程节点和柔和渐变主视觉。",
+        capacity: "界面元素只在边缘，不能穿过图表核心。",
+      },
+      protected_empty_zone: {
+        x: 5.85,
+        y: 0.75,
+        w: 1.05,
+        h: 6.1,
+        role: "产品说明和图表之间的浅色过渡带。",
+        capacity: "不放高饱和按钮或 UI 文本。",
+      },
+    },
+    "investor-narrative": {
+      title_zone: {
+        x: 0.72,
+        y: 0.75,
+        w: 5.7,
+        h: 1.15,
+        role: "融资主张标题和副标题，深色高信任净空。",
+        capacity: "主标题 1 行，副标题 1 行。",
+      },
+      text_zone: {
+        x: 0.82,
+        y: 2.35,
+        w: 4.9,
+        h: 2.25,
+        role: "增长逻辑和商业化证据，背景为低纹理深色。",
+        capacity: "正文 55 个中文字符以内，3 条短要点。",
+      },
+      chart_zone: {
+        x: 7,
+        y: 1.45,
+        w: 4.9,
+        h: 4.9,
+        role: "金色增长曲线和开放式收入图，避开强光中心。",
+        capacity: "4 组增长数据和标签。",
+      },
+      metrics_zone: {
+        x: 0.82,
+        y: 5.45,
+        w: 5.55,
+        h: 0.95,
+        role: "投资人关注的市场、窗口、杠杆指标。",
+        capacity: "3 个大数字，每个 1 个短标签。",
+      },
+      visual_focus_zone: {
+        x: 7.0,
+        y: 2.0,
+        w: 5.7,
+        h: 4.9,
+        role: "市场地图、金色增长线和金融网格主视觉。",
+        capacity: "光线不能压住坐标和数据标签。",
+      },
+      protected_empty_zone: {
+        x: 5.75,
+        y: 0.7,
+        w: 1.05,
+        h: 6,
+        role: "左右区之间的深色呼吸带。",
+        capacity: "保持低对比。",
+      },
+    },
   };
   return { ...shared, zones: blueprints[candidate.slug] };
 }
@@ -717,8 +969,8 @@ function build_clean_background_prompt(candidate, topic, content, coordinate_blu
 }
 
 function build_safe_zone_plan(candidate) {
-  const dark_style = new Set(["data-analytics", "future-tech"]).has(candidate.slug);
-  const light_style = new Set(["minimal-premium", "oriental-heritage", "playful-anime"]).has(candidate.slug);
+  const dark_style = new Set(["data-analytics", "future-tech", "investor-narrative"]).has(candidate.slug);
+  const light_style = new Set(["minimal-premium", "oriental-heritage", "playful-anime", "editorial-magazine", "saas-product"]).has(candidate.slug);
   return {
     text_zone: light_style
       ? "左侧或中左侧保留低纹理浅色留白，使用深色主标题和中灰正文；人物、建筑、山水等高细节素材避开正文行高区域。"
@@ -783,6 +1035,33 @@ function build_typography_system(candidate) {
       body_size: 10,
       label_size: 7,
     },
+    "editorial-magazine": {
+      heading: "编辑杂志式标题，强调观点和节奏，标题更像封面主张。",
+      body: "正文像导语和旁注，留白足，红色只做少量编辑强调。",
+      font_face: "PingFang SC",
+      title_size: 26,
+      section_size: 13.2,
+      body_size: 10.2,
+      label_size: 7.2,
+    },
+    "saas-product": {
+      heading: "产品营销式标题，清晰、直接、偏现代黑体。",
+      body: "正文强调功能收益，搭配流程节点和开放式指标。",
+      font_face: "PingFang SC",
+      title_size: 25,
+      section_size: 12.8,
+      body_size: 10.2,
+      label_size: 7.2,
+    },
+    "investor-narrative": {
+      heading: "投资人 pitch 标题，短促、有主张，数字权重大。",
+      body: "正文压成商业逻辑和证据点，金色只给增长和关键指标。",
+      font_face: "PingFang SC",
+      title_size: 25,
+      section_size: 12.4,
+      body_size: 9.8,
+      label_size: 7,
+    },
   };
   return systems[candidate.slug];
 }
@@ -808,6 +1087,18 @@ function build_chart_language(candidate) {
     "future-tech": {
       type: "neon_launch_columns",
       description: "青紫霓虹柱体和极弱网格，模拟发布会大屏的数据模块。",
+    },
+    "editorial-magazine": {
+      type: "editorial_evidence_axis",
+      description: "细线证据轴、红色关键点和克制柱体，像趋势杂志里的观点图。",
+    },
+    "saas-product": {
+      type: "product_growth_flow",
+      description: "蓝绿增长柱和流程节点结合，表达产品激活、留存和扩展路径。",
+    },
+    "investor-narrative": {
+      type: "gold_growth_story",
+      description: "深色底上的金色增长线和关键柱体，突出市场规模、收入杠杆和扩张窗口。",
     },
   };
   return languages[candidate.slug];
@@ -918,7 +1209,7 @@ function add_sample_layout(slide, candidate, output_dir) {
   const typography = candidate.typography_system || build_typography_system(candidate);
   const zones = candidate.coordinate_blueprint.zones;
   add_background(slide, candidate, theme, output_dir);
-  const is_dark = new Set(["data-analytics", "future-tech"]).has(candidate.slug);
+  const is_dark = new Set(["data-analytics", "future-tech", "investor-narrative"]).has(candidate.slug);
   if (!fs.existsSync(path.join(output_dir, candidate.background_asset_path))) {
     slide.addShape("rect", {
       x: 0,
@@ -1110,8 +1401,8 @@ function write_markdown(output_dir, topic, candidates) {
     "使用方式：",
     "",
     "1. 先查看 `samples/style-sample-*.pptx`，确认文字、指标和图表标签能在 PowerPoint 中直接编辑。",
-    "2. 再查看 `previews/style-sample-*.png`，让用户从 5 张单独预览里选择风格。",
-    "3. 如需提高画面质感，按 `prompts/background-*.md` 生成无文字背景图，保存到 `assets/background-*.png` 后重新运行本工具。",
+    "2. 再查看 `previews/style-sample-*.png`，让用户从 8 张单独预览里选择风格。",
+    "3. 如需提高画面质感，先按 `prompts/style-reference-*.md` 生成完整效果图母稿，验收后再按 `prompts/clean-background-*.md` 生成无文字 clean background，保存到 `assets/background-*.png` 后重新运行本工具。",
     "4. 被选中的方向进入逐页 PPT 生产，沿用同一套 PPT 分层结构，而不是重新临摹一张整页图片。",
     "",
   ];
