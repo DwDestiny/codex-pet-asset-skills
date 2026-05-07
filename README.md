@@ -131,7 +131,7 @@ python ~/.codex/skills/sprite-animation-assets/scripts/compose_sprite_set.py --h
 `visual-ppt-deck-builder` 会指导 Codex：
 
 1. 先确认主题、大纲、风格、张数和每页内容。
-2. 通过 5 套真实 PPTX 样板确认视觉方向；每套样板都有一张由 PPTX 导出的独立 PNG 预览，样板里带标题、正文、指标和图表标签，方便判断字体层级和排版密度；不得使用 SVG 拼凑假图，也不得用整页生图冒充最终可编辑页面。
+2. 通过 5 套真实 PPTX 样板确认视觉方向；每套样板都有一张由 PPTX 导出的独立 PNG 预览，样板里带标题、正文、指标和图表标签，方便判断字体层级和排版密度；不得使用 SVG 拼凑假图，也不得用整页生图冒充最终可编辑页面；候选页必须是融合式版面，禁止用两个大白框把正文和图表贴到背景上。
 3. 逐页生成背景、文案、透明素材、图表和排版，并交付可编辑 PPTX；正文、图表和标签不能整页截图化。
 
 核心脚本：
@@ -308,7 +308,7 @@ python ~/.codex/skills/sprite-animation-assets/scripts/compose_sprite_set.py --h
 `visual-ppt-deck-builder` helps Codex:
 
 1. Confirm topic, outline, style, slide count, and per-slide content.
-2. Use five real PPTX style samples to lock the visual direction. Each sample has an independent PNG preview exported from the PPTX and includes sample titles, body copy, metrics, and chart labels so users can evaluate typography hierarchy and layout density. Do not fake style samples with SVG or full-slide generated images that cannot be reproduced as editable slides.
+2. Use five real PPTX style samples to lock the visual direction. Each sample has an independent PNG preview exported from the PPTX and includes sample titles, body copy, metrics, and chart labels so users can evaluate typography hierarchy and layout density. Do not fake style samples with SVG or full-slide generated images that cannot be reproduced as editable slides; the candidate page must use integrated surfaces instead of two large white boxes pasted over a background.
 3. Generate backgrounds, copy, transparent assets, charts, and layouts, then deliver an editable PPTX; body text, charts, and labels must stay editable instead of being baked into a full-slide screenshot.
 
 Core script:

@@ -180,10 +180,54 @@ function add_metric_card(slide, metric, index, theme, x, y, w, h) {
   });
 }
 
-function add_editable_chart(slide, content, theme, x, y, w, h) {
+function add_metric_tile(slide, metric, index, theme, x, y, w, h, options = {}) {
+  const fill = options.fill || theme.metric_fill || theme.card_fill;
+  const line = options.line || (index % 2 === 0 ? theme.accent : theme.accent_2);
+  add_panel(slide, {
+    x,
+    y,
+    w,
+    h,
+    fill,
+    line,
+    transparency: options.transparency == null ? theme.metric_transparency || 0 : options.transparency,
+    line_transparency: options.line_transparency == null ? 18 : options.line_transparency,
+  });
+  add_text(slide, metric.value, {
+    x: x + 0.14,
+    y: y + 0.1,
+    w: w - 0.28,
+    h: h * 0.46,
+    font_face: theme.font_face,
+    font_size: options.value_size || 18,
+    bold: true,
+    color: index % 2 === 0 ? theme.accent : theme.accent_2,
+  });
+  add_text(slide, metric.label, {
+    x: x + 0.14,
+    y: y + h * 0.58,
+    w: w - 0.28,
+    h: h * 0.26,
+    font_face: theme.font_face,
+    font_size: options.label_size || 7.6,
+    bold: true,
+    color: theme.foreground,
+  });
+}
+
+function add_editable_chart(slide, content, theme, x, y, w, h, options = {}) {
   const values = [42, 64, 78, 91];
   const gap = 0.22;
   const bar_width = (w - gap * 5) / 4;
+  if (options.axis) {
+    slide.addShape("line", {
+      x,
+      y: y + h - 0.46,
+      w,
+      h: 0,
+      line: { color: strip_hash(theme.axis || theme.muted), transparency: 30, width: 1 },
+    });
+  }
   content.chart_labels.forEach((label, index) => {
     const bar_height = (h - 0.46) * (values[index] / 100);
     const bar_x = x + gap + index * (bar_width + gap);
@@ -206,6 +250,59 @@ function add_editable_chart(slide, content, theme, x, y, w, h) {
       color: theme.muted,
       align: "center",
     });
+  });
+}
+
+function add_bullet_list(slide, bullets, theme, x, y, options = {}) {
+  bullets.forEach((bullet, index) => {
+    const bullet_y = y + index * (options.step || 0.32);
+    slide.addShape("ellipse", {
+      x,
+      y: bullet_y + 0.04,
+      w: 0.08,
+      h: 0.08,
+      fill: { color: strip_hash(index % 2 === 0 ? theme.accent : theme.accent_2) },
+      line: { transparency: 100 },
+    });
+    add_text(slide, bullet, {
+      x: x + 0.18,
+      y: bullet_y - 0.02,
+      w: options.w || 3.6,
+      h: 0.18,
+      font_face: theme.font_face,
+      font_size: options.font_size || 8.2,
+      color: theme.foreground,
+    });
+  });
+}
+
+function add_integrated_note(slide, candidate, theme, x, y, w) {
+  slide.addShape("line", {
+    x,
+    y: y + 0.02,
+    w: 0.52,
+    h: 0,
+    line: { color: strip_hash(theme.accent), transparency: 10, width: 1.5 },
+  });
+  add_text(slide, "文字、数字和图表标签均为 PPT 可编辑对象", {
+    x: x + 0.68,
+    y: y - 0.08,
+    w,
+    h: 0.18,
+    font_face: theme.font_face,
+    font_size: 7.4,
+    color: theme.muted,
+  });
+  add_text(slide, candidate.name, {
+    x: 10.8,
+    y: 6.88,
+    w: 1.0,
+    h: 0.16,
+    font_face: theme.font_face,
+    font_size: 7.2,
+    bold: true,
+    color: theme.accent,
+    align: "right",
   });
 }
 
@@ -237,7 +334,9 @@ function theme_for(candidate) {
       accent: "F59E0B",
       accent_2: "FF7AA2",
       card_fill: "FFFFFF",
-      card_transparency: 0,
+      card_transparency: 18,
+      metric_fill: "FFF4D6",
+      metric_transparency: 10,
       font_face: "PingFang SC",
     };
   }
@@ -250,6 +349,9 @@ function theme_for(candidate) {
       accent_2: "12C7D6",
       card_fill: "071B34",
       card_transparency: 8,
+      metric_fill: "08213C",
+      metric_transparency: 10,
+      axis: "2E6F9E",
       font_face: "PingFang SC",
     };
   }
@@ -261,6 +363,9 @@ function theme_for(candidate) {
     accent_2: palette[1],
     card_fill: is_dark ? "071B34" : "FFFFFF",
     card_transparency: is_dark ? 8 : 0,
+    metric_fill: is_dark ? "071B34" : "FFFFFF",
+    metric_transparency: is_dark ? 8 : 0,
+    axis: is_dark ? "315D82" : "A7A7A7",
     font_face: "PingFang SC",
   };
 }
@@ -344,6 +449,8 @@ function build_sample_slide_spec(candidate, content) {
     bullets: content.bullets,
     metrics: content.metrics,
     chart_labels: content.chart_labels,
+    integrated_surface_strategy:
+      "用开放式信息层、半透明融合面、风格化图表区和小型指标组组成页面，避免两个大白框贴在背景上。",
   };
 }
 
@@ -374,6 +481,10 @@ function build_candidate(candidate_template, topic) {
       "标题、副标题、正文、要点、指标数字、指标标签和图表标签必须作为 PPT 文本对象生成，用户能在 PowerPoint 中直接改。",
     asset_layer_contract:
       "背景和装饰只能作为独立 raster/transparent image assets 叠加，不得承载正式正文、关键数字或图表标签。",
+    surface_strategy:
+      "采用融合式版面：文本、指标和图表嵌入背景留白、光带或纸纹/玻璃层中，形成同一视觉系统。",
+    no_plain_white_box_contract:
+      "禁止大白框：不得用两个大面积纯白矩形分别承载正文和图表，浅色区域也必须有透明度、纹理感、边界节奏或开放式布局。",
   };
 }
 
@@ -402,6 +513,8 @@ function add_sample_layout(slide, candidate, output_dir) {
       slide.addShape("line", { x: 7.7, y: 5.8, w: 4.0, h: -4.1, line: { color: strip_hash(theme.accent), transparency: 35, width: 1.2 } });
     }
   }
+
+  const title_color = theme.foreground;
   add_text(slide, "2026 RESEARCH", {
     x: 0.72,
     y: 0.46,
@@ -414,17 +527,17 @@ function add_sample_layout(slide, candidate, output_dir) {
   });
   add_text(slide, content.title, {
     x: 0.72,
-    y: 0.82,
-    w: 6.0,
+    y: 0.76,
+    w: 6.15,
     h: 0.85,
     font_face: theme.font_face,
-    font_size: candidate.slug === "oriental-heritage" ? 26 : 25,
+    font_size: candidate.slug === "oriental-heritage" ? 25 : 25,
     bold: true,
-    color: theme.foreground,
+    color: title_color,
   });
   add_text(slide, content.subtitle, {
     x: 0.76,
-    y: 1.68,
+    y: 1.6,
     w: 4.5,
     h: 0.25,
     font_face: theme.font_face,
@@ -432,10 +545,75 @@ function add_sample_layout(slide, candidate, output_dir) {
     bold: true,
     color: theme.accent,
   });
-  add_panel(slide, { x: 0.75, y: 2.22, w: 5.55, h: 2.05, fill: theme.card_fill, line: theme.accent, transparency: theme.card_transparency || 0, line_transparency: 30 });
+
+  if (candidate.slug === "minimal-premium") {
+    slide.addShape("line", { x: 0.78, y: 2.12, w: 4.85, h: 0, line: { color: "050505", transparency: 55, width: 1 } });
+    slide.addShape("line", { x: 6.82, y: 1.22, w: 0, h: 4.92, line: { color: "A7A7A7", transparency: 45, width: 1 } });
+    add_text(slide, content.section_title, {
+      x: 0.82,
+      y: 2.42,
+      w: 1.8,
+      h: 0.28,
+      font_face: theme.font_face,
+      font_size: 14,
+      bold: true,
+      color: theme.foreground,
+    });
+    add_text(slide, content.body, {
+      x: 0.82,
+      y: 2.94,
+      w: 4.8,
+      h: 0.7,
+      font_face: theme.font_face,
+      font_size: 11.1,
+      color: theme.muted,
+    });
+    add_bullet_list(slide, content.bullets, theme, 0.86, 4.0, { w: 4.5, font_size: 8.3, step: 0.34 });
+    content.metrics.forEach((metric, index) => {
+      add_metric_tile(slide, metric, index, theme, 0.82 + index * 1.78, 5.28, 1.35, 0.72, {
+        fill: "F5F5F2",
+        transparency: 34,
+        line_transparency: 48,
+        value_size: 17,
+      });
+    });
+    add_text(slide, "趋势指数", { x: 7.42, y: 1.36, w: 2.1, h: 0.26, font_face: theme.font_face, font_size: 13, bold: true, color: theme.foreground });
+    slide.addShape("line", { x: 7.42, y: 1.84, w: 3.78, h: 0, line: { color: "050505", transparency: 55, width: 1 } });
+    add_editable_chart(slide, content, theme, 7.35, 2.12, 4.05, 2.75, { axis: true });
+    add_integrated_note(slide, candidate, theme, 7.42, 5.34, 3.8);
+    return;
+  }
+
+  if (candidate.slug === "oriental-heritage") {
+    add_panel(slide, { x: 0.72, y: 2.16, w: 5.35, h: 2.1, fill: "F7EFE0", line: "B91C1C", transparency: 8, line_transparency: 38 });
+    slide.addShape("line", { x: 0.98, y: 2.46, w: 0.52, h: 0, line: { color: "B91C1C", width: 2, transparency: 8 } });
+    add_text(slide, content.section_title, { x: 1.02, y: 2.62, w: 1.8, h: 0.28, font_face: theme.font_face, font_size: 14, bold: true, color: theme.accent });
+    add_text(slide, content.body, { x: 1.02, y: 3.12, w: 4.55, h: 0.56, font_face: theme.font_face, font_size: 11.0, color: theme.muted });
+    add_bullet_list(slide, content.bullets, theme, 1.04, 3.82, { w: 3.6, font_size: 8.2, step: 0.27 });
+    content.metrics.forEach((metric, index) => {
+      add_metric_tile(slide, metric, index, theme, 0.78 + index * 1.82, 5.18, 1.38, 0.76, {
+        fill: index === 1 ? "FAF8F2" : "F3EADB",
+        transparency: 14,
+        line: index === 1 ? "171717" : "B91C1C",
+        line_transparency: 30,
+        value_size: 17,
+      });
+    });
+    add_text(slide, "趋势指数", { x: 7.52, y: 1.55, w: 2.1, h: 0.26, font_face: theme.font_face, font_size: 14, bold: true, color: theme.accent });
+    slide.addShape("line", { x: 7.48, y: 1.98, w: 4.12, h: 0, line: { color: "B91C1C", transparency: 35, width: 1.2 } });
+    add_editable_chart(slide, content, theme, 7.35, 2.18, 4.12, 2.58, { axis: true });
+    add_integrated_note(slide, candidate, theme, 7.5, 5.28, 3.8);
+    return;
+  }
+
+  const surface_fill = is_dark ? "061C3A" : "FFF8EC";
+  const surface_line = is_dark ? theme.accent_2 : theme.accent;
+  const is_playful = candidate.slug === "playful-anime";
+  const surface_transparency = is_dark ? 22 : is_playful ? 34 : 24;
+  add_panel(slide, { x: 0.74, y: 2.12, w: 5.45, h: 2.12, fill: surface_fill, line: surface_line, transparency: surface_transparency, line_transparency: is_playful ? 58 : 46 });
   add_text(slide, content.section_title, {
     x: 1.02,
-    y: 2.48,
+    y: 2.44,
     w: 1.8,
     h: 0.28,
     font_face: theme.font_face,
@@ -452,33 +630,18 @@ function add_sample_layout(slide, candidate, output_dir) {
     font_size: 11.2,
     color: theme.muted,
   });
-  content.bullets.forEach((bullet, index) => {
-    const y = 3.82 + index * 0.28;
-    slide.addShape("ellipse", {
-      x: 1.05,
-      y,
-      w: 0.09,
-      h: 0.09,
-      fill: { color: strip_hash(index % 2 === 0 ? theme.accent : theme.accent_2) },
-      line: { transparency: 100 },
-    });
-    add_text(slide, bullet, {
-      x: 1.22,
-      y: y - 0.04,
-      w: 3.8,
-      h: 0.16,
-      font_face: theme.font_face,
-      font_size: 8.3,
-      color: theme.foreground,
-    });
-  });
+  add_bullet_list(slide, content.bullets, theme, 1.05, 3.78, { w: 3.8, font_size: 8.3, step: 0.3 });
   content.metrics.forEach((metric, index) => {
-    add_metric_card(slide, metric, index, theme, 0.78 + index * 1.84, 4.72, 1.55, 0.92);
+    add_metric_tile(slide, metric, index, theme, 0.78 + index * 1.84, 4.92, 1.55, 0.82, {
+      transparency: is_dark ? 22 : is_playful ? 22 : 8,
+      line_transparency: is_playful ? 34 : 25,
+      value_size: 18,
+    });
   });
-  add_panel(slide, { x: 7.35, y: 1.15, w: 4.8, h: 4.65, fill: theme.card_fill, line: theme.accent_2, transparency: theme.card_transparency || 0, line_transparency: 34 });
+  add_panel(slide, { x: 7.2, y: 1.2, w: 4.92, h: 4.58, fill: is_dark ? "04192F" : "FFFDF7", line: theme.accent_2, transparency: is_dark ? 24 : is_playful ? 42 : 18, line_transparency: is_playful ? 60 : 42 });
   add_text(slide, "趋势指数", {
-    x: 7.72,
-    y: 1.46,
+    x: 7.6,
+    y: 1.48,
     w: 2.2,
     h: 0.26,
     font_face: theme.font_face,
@@ -486,27 +649,8 @@ function add_sample_layout(slide, candidate, output_dir) {
     bold: true,
     color: theme.foreground,
   });
-  add_editable_chart(slide, content, theme, 7.72, 2.1, 3.85, 2.6);
-  add_text(slide, "样张中的文字、数字和图表标签均为 PPT 可编辑对象", {
-    x: 7.72,
-    y: 5.12,
-    w: 3.85,
-    h: 0.28,
-    font_face: theme.font_face,
-    font_size: 8.4,
-    color: theme.muted,
-  });
-  add_text(slide, candidate.name, {
-    x: 10.8,
-    y: 6.88,
-    w: 1.0,
-    h: 0.16,
-    font_face: theme.font_face,
-    font_size: 7.5,
-    bold: true,
-    color: theme.accent,
-    align: "right",
-  });
+  add_editable_chart(slide, content, theme, 7.55, 2.1, 3.95, 2.62, { axis: true });
+  add_integrated_note(slide, candidate, theme, 7.6, 5.24, 3.75);
 }
 
 async function write_candidate_pptx(output_dir, candidate) {
@@ -568,7 +712,7 @@ function write_markdown(output_dir, topic, candidates) {
     "",
     `主题：${topic}`,
     "",
-    "硬规则：每个候选必须先生成真实 PPTX 样板，再从 PPTX 导出 PNG 预览。PNG 预览只用于选择风格；真正可复用的是 PPTX 样板、背景素材、透明素材和分层契约。标题、正文、指标、图表标签必须文本可编辑，不允许把正式页面整页生图后交给用户选。",
+    "硬规则：每个候选必须先生成真实 PPTX 样板，再从 PPTX 导出 PNG 预览。PNG 预览只用于选择风格；真正可复用的是 PPTX 样板、背景素材、透明素材和分层契约。标题、正文、指标、图表标签必须文本可编辑，不允许把正式页面整页生图后交给用户选。视觉上必须是融合式版面，禁止大白框贴背景。",
     "",
     "使用方式：",
     "",
@@ -592,6 +736,8 @@ function write_markdown(output_dir, topic, candidates) {
     lines.push(`- 样本标题：${candidate.sample_content.title}`);
     lines.push(`- 样本正文：${candidate.sample_content.body}`);
     lines.push(`- 分层契约：${candidate.editable_text_contract}`);
+    lines.push(`- 融合策略：${candidate.surface_strategy}`);
+    lines.push(`- 白框约束：${candidate.no_plain_white_box_contract}`);
     lines.push("");
   }
   fs.writeFileSync(path.join(output_dir, "style-candidates.md"), `${lines.join("\n")}\n`, "utf8");
@@ -605,6 +751,8 @@ function write_spec(output_dir, topic, candidates) {
     preview_rule: "PNG 预览必须由对应 PPTX 样板渲染导出，不能直接使用整页生图作为候选。",
     ppt_contract:
       "PPTX 样板中的标题、正文、指标、图表标签和关键注释必须可编辑；图片只承担背景、透明素材和装饰层。",
+    visual_quality_contract:
+      "候选必须达到融合式版面：背景、文本、指标和图表属于同一视觉系统；禁止大白框贴背景，避免两个大面积纯白矩形分别承载正文和图表。",
     candidates,
   };
   fs.writeFileSync(path.join(output_dir, "style-candidate-spec.json"), `${JSON.stringify(spec, null, 2)}\n`, "utf8");
